@@ -1,0 +1,330 @@
+
+/**
+ * ─────────────────────────────────────────
+ * 🎨 GLOBAL STYLES: Enhanced 3D animations and modern design system
+ * ─────────────────────────────────────────
+ * 
+ * Purpose: Global CSS with enhanced 3D animations, custom properties, and utilities
+ * Dependencies: Tailwind CSS, Google Fonts
+ * 
+ * Features:
+ * - Hardware-accelerated 3D animations (300ms standard)
+ * - Enhanced custom scrollbars and form elements  
+ * - Smooth transitions and micro-interactions
+ * - Modern glassmorphism effects with lower opacity
+ * - Responsive design utilities
+ * - Black theme support
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────
+   🎯 ENHANCED CSS CUSTOM PROPERTIES: Design system
+   ───────────────────────────────────────── */
+:root {
+  --transition-fast: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-smooth: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --blur-glass: blur(24px) saturate(1.8);
+  --shadow-3d: 0 24px 48px rgba(0, 0, 0, 0.15);
+  --opacity-base: 0.8;
+  --opacity-hover: 1.0;
+}
+
+/* ─────────────────────────────────────────
+   🌐 BASE STYLES: Enhanced global resets
+   ───────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  background: #000;
+}
+
+/* ─────────────────────────────────────────
+   🎬 ENHANCED 3D ANIMATION UTILITIES: Hardware accelerated
+   ───────────────────────────────────────── */
+.transform-gpu {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000px;
+  will-change: transform;
+}
+
+.hover-scale {
+  transition: var(--transition-fast);
+  transform-origin: center;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05) translateZ(0);
+}
+
+.transition-fast {
+  transition: var(--transition-fast);
+}
+
+.transition-smooth {
+  transition: var(--transition-smooth);
+}
+
+.transition-theme {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease;
+}
+
+/* ─────────────────────────────────────────
+   ✨ ENHANCED KEYFRAME ANIMATIONS: Smooth 3D effects
+   ───────────────────────────────────────── */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.92) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%) rotateY(-15deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) rotateY(0deg);
+  }
+}
+
+@keyframes celebration-bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  40%, 43% {
+    transform: translate3d(0, -30px, 0) scale(1.1);
+  }
+  70% {
+    transform: translate3d(0, -15px, 0) scale(1.05);
+  }
+  90% {
+    transform: translate3d(0, -4px, 0) scale(1.02);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotateX(2deg);
+  }
+}
+
+/* ─────────────────────────────────────────
+   🎭 ENHANCED UTILITY CLASSES: 3D components
+   ───────────────────────────────────────── */
+.animate-fade-in {
+  animation: fade-in 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-fade-scale-in {
+  animation: fade-scale-in 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.animate-celebration-bounce {
+  animation: celebration-bounce 1s ease-in-out;
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+/* ─────────────────────────────────────────
+   🎨 ENHANCED GLASSMORPHISM: Lower opacity effects
+   ───────────────────────────────────────── */
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: var(--blur-glass);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.glass-dark {
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: var(--blur-glass);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ─────────────────────────────────────────
+   📱 ENHANCED CUSTOM SCROLLBARS: Modern styling
+   ───────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+/* ─────────────────────────────────────────
+   🎯 ENHANCED CUSTOM FORM ELEMENTS: Modern inputs
+   ───────────────────────────────────────── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  height: 4px;
+}
+
+input[type="range"]::-webkit-slider-track {
+  background: rgba(255, 255, 255, 0.15);
+  height: 4px;
+  border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: white;
+  height: 14px;
+  width: 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: var(--transition-fast);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.4);
+}
+
+/* ─────────────────────────────────────────
+   📱 ENHANCED RESPONSIVE DESIGN: Mobile optimizations
+   ───────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hover-scale:hover {
+    transform: none;
+  }
+  
+  .glass, .glass-dark {
+    backdrop-filter: blur(15px);
+  }
+
+  :root {
+    --opacity-base: 0.9;
+  }
+}
+
+/* ─────────────────────────────────────────
+   🎭 ENHANCED ACCESSIBILITY: Focus states
+   ───────────────────────────────────────── */
+button:focus-visible,
+input:focus-visible,
+a:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+/* ─────────────────────────────────────────
+   🔧 ENHANCED UTILITY CLASSES: Helper styles
+   ───────────────────────────────────────── */
+.text-shadow {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.shadow-3d {
+  box-shadow: var(--shadow-3d);
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+
+.opacity-base {
+  opacity: var(--opacity-base);
+}
+
+.opacity-hover:hover {
+  opacity: var(--opacity-hover);
+}
+
+/* ─────────────────────────────────────────
+   🎬 PRODUCTION READY: Enhanced error handling
+   ───────────────────────────────────────── */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Enhanced focus visibility */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: 0;
+}
+
+/* Dark theme support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --opacity-base: 0.7;
+  }
+}
