@@ -61,7 +61,7 @@ interface YouTubeBackgroundProps {
  * YouTubeBackground component for immersive video backgrounds
  * Handles video loading, volume control, and responsive display
  */
-const YouTubeBackground = ({ videoId, volume, onVolumeChange }: YouTubeBackgroundProps) => {
+const YouTubeBackground = ({ videoId = '5qap5aO4i9A', volume, onVolumeChange }: YouTubeBackgroundProps) => {
   // ─────────────────────────────────────────────────────────────────────────────
   // 🎛️ COMPONENT STATE
   // ─────────────────────────────────────────────────────────────────────────────
@@ -251,11 +251,8 @@ const YouTubeBackground = ({ videoId, volume, onVolumeChange }: YouTubeBackgroun
           isVideoLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         src={`https://www.youtube.com/embed/${videoId}?${new URLSearchParams({
-          // ─────────────────────────────────────────────────────────────────────────────
-          // 🎛️ YOUTUBE EMBED PARAMETERS
-          // ─────────────────────────────────────────────────────────────────────────────
           autoplay: '1', // Auto-start playback
-          mute: '0', // Unmuted in URL for default audio playing
+          mute: '1', // Muted in URL for autoplay to work in all browsers
           loop: '1', // Loop video continuously
           playlist: videoId, // Required for looping single video
           controls: '0', // Hide video controls
