@@ -251,25 +251,25 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A', volume, onVolumeChange }: 
           isVideoLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         src={`https://www.youtube.com/embed/${videoId}?${new URLSearchParams({
-          autoplay: '1', // Auto-start playback
-          mute: '1', // Muted in URL for autoplay to work in all browsers
-          loop: '1', // Loop video continuously
-          playlist: videoId, // Required for looping single video
-          controls: '0', // Hide video controls
-          showinfo: '0', // Hide video information
-          rel: '0', // Don't show related videos
-          iv_load_policy: '3', // Hide video annotations
-          modestbranding: '1', // Minimal YouTube branding
-          playsinline: '1', // Inline playback on mobile
-          start: '0', // Start from beginning
-          fs: '0', // Disable fullscreen button
-          cc_load_policy: '0', // Don't load captions
-          disablekb: '1', // Disable keyboard controls
-          enablejsapi: '1', // Enable JavaScript API
-          origin: encodeURIComponent(window.location.origin), // Set origin for security
-          branding: '0', // Minimal branding
-          autohide: '1', // Auto-hide controls
-          quality: 'hd720' // Prefer HD quality
+          autoplay: '1',
+          mute: '1',
+          loop: '1',
+          playlist: videoId,
+          controls: '0',
+          showinfo: '0',
+          rel: '0',
+          iv_load_policy: '3',
+          modestbranding: '1',
+          playsinline: '1',
+          start: '0',
+          fs: '0',
+          cc_load_policy: '0',
+          disablekb: '1',
+          enablejsapi: '1',
+          origin: encodeURIComponent(window.location.origin),
+          branding: '0',
+          autohide: '1',
+          quality: 'hd720'
         }).toString()}`}
         title="Background Focus Music"
         frameBorder="0"
@@ -294,6 +294,27 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A', volume, onVolumeChange }: 
           Subtle effect that doesn't interfere with video experience
       */}
       <div className="absolute inset-0 bg-black/30" />
+
+      {/* Enable Audio Button */}
+      {volume === 0 && (
+        <button
+          style={{
+            position: "absolute",
+            bottom: 20,
+            right: 20,
+            zIndex: 10,
+            padding: "10px 20px",
+            background: "#222",
+            color: "#fff",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer"
+          }}
+          onClick={() => onVolumeChange(50)}
+        >
+          Enable Audio
+        </button>
+      )}
     </div>
   );
 };
