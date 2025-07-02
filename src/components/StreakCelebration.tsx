@@ -1,4 +1,3 @@
-
 /**
  * ─────────────────────────────────────────
  * 🎉 STREAK CELEBRATION: Full-screen completion animation
@@ -34,7 +33,7 @@ const StreakCelebration = ({ isVisible, streakCount, onComplete }: StreakCelebra
       const timer4 = setTimeout(() => {
         setAnimationPhase(0);
         onComplete();
-      }, 3000); // Exactly 3 seconds
+      }, 5000); // Show for 5 seconds
 
       return () => {
         clearTimeout(timer1);
