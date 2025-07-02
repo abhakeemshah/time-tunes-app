@@ -64,8 +64,7 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A' }: YouTubeBackgroundProps) 
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
   const [showFallback, setShowFallback] = useState(true);
   const [iframeKey, setIframeKey] = useState(0);
-
-  // Only keep the loading/fallback logic, remove all volume/mute logic
+  const [musicOn, setMusicOn] = useState(false); // music is off (muted) by default
 
   React.useEffect(() => {
     setShowFallback(true);
@@ -76,6 +75,31 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A' }: YouTubeBackgroundProps) 
     }, 2000);
     return () => clearTimeout(loadTimer);
   }, [videoId]);
+
+  // Always try to keep the video playing
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      if (iframeRef.current?.contentWindow) {
+        iframeRef.current.contentWindow.postMessage(
+          '{"event":"command","func":"playVideo","args":""}',
+          '*'
+        );
+      }
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Toggle mute/unmute when musicOn changes
+  React.useEffect(() => {
+    if (iframeRef.current?.contentWindow) {
+      iframeRef.current.contentWindow.postMessage(
+        musicOn
+          ? '{"event":"command","func":"unMute","args":""}'
+          : '{"event":"command","func":"mute","args":""}',
+        '*'
+      );
+    }
+  }, [musicOn]);
 
   return (
     <div className="fixed inset-0 w-full h-full -z-10 overflow-hidden bg-black">
@@ -93,7 +117,7 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A' }: YouTubeBackgroundProps) 
         className={`absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-500 ${
           isVideoLoaded ? 'opacity-100' : 'opacity-0'
         }`}
-        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&start=0&fs=0&cc_load_policy=0&disablekb=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}&branding=0&autohide=1&quality=hd720`}
+        src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&start=0&fs=0&cc_load_policy=0&disablekb=1&enablejsapi=1&origin=${encodeURIComponent(window.location.origin)}&branding=0&autohide=1&quality=hd720`}
         title="Background Focus Music"
         frameBorder="0"
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -107,6 +131,27 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A' }: YouTubeBackgroundProps) 
         }}
       />
       <div className="absolute inset-0 bg-black/30" />
+      {/* Music Toggle Button */}
+      <button
+        style={{
+          position: 'absolute',
+          bottom: 20,
+          right: 120, // adjust to be next to Background button
+          zIndex: 20,
+          padding: '10px 20px',
+          background: musicOn ? '#4ade80' : '#222',
+          color: '#fff',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          fontWeight: 'bold',
+          fontSize: '16px',
+          opacity: 0.85
+        }}
+        onClick={() => setMusicOn((on) => !on)}
+      >
+        {musicOn ? 'Music On' : 'Music Off'}
+      </button>
     </div>
   );
 };
