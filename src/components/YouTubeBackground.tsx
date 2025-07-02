@@ -246,13 +246,13 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A', volume, onVolumeChange }: 
       */}
       <iframe
         ref={iframeRef}
-        key={videoId + '-' + iframeKey} // Force re-render when video changes or reload needed
+        key={videoId + '-' + iframeKey}
         className={`absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-500 ${
           isVideoLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         src={`https://www.youtube.com/embed/${videoId}?${new URLSearchParams({
           autoplay: '1',
-          mute: '1',
+          mute: '0', // Unmuted for default audio playing
           loop: '1',
           playlist: videoId,
           controls: '0',
@@ -294,35 +294,6 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A', volume, onVolumeChange }: 
           Subtle effect that doesn't interfere with video experience
       */}
       <div className="absolute inset-0 bg-black/30" />
-
-      {/* Enable Audio Button */}
-      {volume === 0 && (
-        <button
-          style={{
-            position: "absolute",
-            bottom: 20,
-            right: 20,
-            zIndex: 10,
-            padding: "10px 20px",
-            background: "#222",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer"
-          }}
-          onClick={() => {
-            if (iframeRef.current?.contentWindow) {
-              iframeRef.current.contentWindow.postMessage(
-                '{"event":"command","func":"unMute","args":""}',
-                '*'
-              );
-            }
-            onVolumeChange(50);
-          }}
-        >
-          Enable Audio
-        </button>
-      )}
     </div>
   );
 };
