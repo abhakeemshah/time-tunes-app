@@ -310,7 +310,15 @@ const YouTubeBackground = ({ videoId = '5qap5aO4i9A', volume, onVolumeChange }: 
             borderRadius: "5px",
             cursor: "pointer"
           }}
-          onClick={() => onVolumeChange(50)}
+          onClick={() => {
+            if (iframeRef.current?.contentWindow) {
+              iframeRef.current.contentWindow.postMessage(
+                '{"event":"command","func":"unMute","args":""}',
+                '*'
+              );
+            }
+            onVolumeChange(50);
+          }}
         >
           Enable Audio
         </button>
