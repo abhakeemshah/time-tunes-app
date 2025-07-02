@@ -1,4 +1,3 @@
-
 /**
  * ─────────────────────────────────────────
  * 🚀 APP ROOT: Main application setup (No Authentication)
@@ -31,6 +30,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
+import { Analytics } from "@vercel/analytics/react";
 
 // ─────────────────────────────────────────
 // 🔧 QUERY CLIENT: React Query configuration for future features
@@ -50,6 +50,8 @@ const App = () => (
       {/* Toast notifications for user feedback */}
       <Toaster />
       <Sonner />
+      {/* Vercel Analytics */}
+      <Analytics />
       
       {/* Simple Router - Main page only */}
       <BrowserRouter>
