@@ -36,11 +36,11 @@ interface Video {
 // ─────────────────────────────────────────
 export const videos: Video[] = [
   // Free tier videos
-  { id: 'OO2kPK5-qno', title: 'Forest Rain', theme: 'emerald' },
-  { id: 'q8L-0WM2uQc', title: 'Ocean Waves', theme: 'blue' },
-  { id: 'DWcJFNfaw9c', title: 'Campfire Night', theme: 'red-orange' },
-  { id: 'M4QVcFbH2kM', title: 'Coffee Shop', theme: 'rose' },
-  { id: 'nDq6TstdEi8', title: 'Mountain View', theme: 'purple' },
+  { id: 'OEatxP2YujY', title: 'Rain Lofi Deep Focus', theme: 'emerald' },
+  { id: 'V-b9MirVx2w', title: 'Chillest Lofi Universe', theme: 'blue' },
+  { id: 'tK6CkwQKz4U', title: 'LofiMind Oasis', theme: 'red-orange' },
+  { id: 'aUm_OogP1nM', title: 'Soft Rain for Sleep', theme: 'rose' },
+  { id: '77Mw-nklgwI', title: 'Rain on Window', theme: 'purple' },
   
   // Premium tier videos
   { id: 'bkN2p-a3q-s', title: 'Winter Forest', theme: 'blue', isPremium: true },
@@ -57,7 +57,8 @@ export const videos: Video[] = [
   { id: 'Zbg5Wk0wrVc', title: 'Crystal Cave', theme: 'purple', isPremium: true },
   { id: 'xbj8MuqHKe4', title: 'Fireplace Cozy', theme: 'rose', isPremium: true },
   { id: 'W7fHJKMWyaE', title: 'Starry Night', theme: 'purple', isPremium: true },
-  { id: '1vj5xKZC9Rs', title: 'Tropical Paradise', theme: 'emerald', isPremium: true }
+  { id: '1vj5xKZC9Rs', title: 'Tropical Paradise', theme: 'emerald', isPremium: true },
+  { id: 'x0vKfhi3rZY', title: 'Rain in Rustic Cabin', theme: 'blue', isPremium: true },
 ];
 
 interface VideoSelectorProps {

@@ -1,4 +1,3 @@
-
 /**
  * ─────────────────────────────────────────
  * 🎨 THEME SELECTOR: Enhanced theme switching with social gates
@@ -51,12 +50,12 @@ const ThemeSelector = () => {
   const freeThemes = ['red-orange', 'emerald', 'blue']; // First 3 themes are free
   
   const handleThemeClick = (themeId: string) => {
+    setTheme(themeId); // Always update the theme color immediately
     if (!freeThemes.includes(themeId) && !hasFollowed) {
       setShowFollowPrompt(true);
       setIsOpen(false);
       return;
     }
-    setTheme(themeId);
     setIsOpen(false);
   };
 
