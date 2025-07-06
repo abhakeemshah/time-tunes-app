@@ -44,7 +44,6 @@ import TodosSection from '@/components/TodosSection';
 import UserActions from '@/components/UserActions';
 import ProfilePopup from '@/components/ProfilePopup';
 import DonationPopup from '@/components/DonationPopup';
-import ThemeSelector from '@/components/ThemeSelector';
 import StreakCelebration from '@/components/StreakCelebration';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
 import { useStreak } from '@/hooks/useStreak';
@@ -178,18 +177,6 @@ const AppContent = () => {
         >
           Background
         </Button>
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────────────────────
-          🎨 THEME SELECTOR - TOP RIGHT
-          ─────────────────────────────────────────────────────────────────────────────
-          Color theme selection dropdown.
-          - Wrapped in opacity container for consistent styling
-          - Includes free and premium theme options
-          - Social gate system for premium themes
-      */}
-      <div className="opacity-70 hover:opacity-100 transition-all duration-300">
-        <ThemeSelector />
       </div>
 
       {/* ─────────────────────────────────────────────────────────────────────────────
