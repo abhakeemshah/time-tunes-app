@@ -48,6 +48,7 @@ import StreakCelebration from '@/components/StreakCelebration';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
 import { useStreak } from '@/hooks/useStreak';
 import { videos } from '@/components/VideoSelector'; // Import the videos array for theme lookup
+import { Volume2, VolumeX } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 📱 APP CONTENT COMPONENT
@@ -81,6 +82,8 @@ const AppContent = () => {
   // Media and content states
   const [selectedVideo, setSelectedVideo] = useState('OO2kPK5-qno'); // Current background video ID
   const [volume, setVolume] = useState(30); // Audio volume (0-100), start with sound
+  const [muted, setMuted] = useState(false);
+  const [lastVolume, setLastVolume] = useState(30);
   
   // Achievement celebration states
   const [showStreakCelebration, setShowStreakCelebration] = useState(false);
@@ -107,6 +110,18 @@ const AppContent = () => {
     const newStreak = incrementStreak(); // Increment and get new streak count
     setCelebrationStreak(newStreak); // Set celebration count
     setShowStreakCelebration(true); // Show celebration animation
+  };
+
+  // Mute toggle handler
+  const handleMuteToggle = () => {
+    if (muted) {
+      setVolume(lastVolume > 0 ? lastVolume : 30);
+      setMuted(false);
+    } else {
+      setLastVolume(volume);
+      setVolume(0);
+      setMuted(true);
+    }
   };
 
   return (
@@ -162,7 +177,7 @@ const AppContent = () => {
           - Glassmorphism design with backdrop blur
           - Positioned in bottom-right corner
       */}
-      <div className="fixed bottom-4 right-4 z-30">
+      <div className="fixed bottom-4 right-4 z-30 flex items-center gap-2">
         <Button
           onClick={() => setIsSidebarOpen(true)}
           className="px-6 py-3 rounded-2xl shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-70 hover:opacity-100 font-sora font-medium"
@@ -175,6 +190,20 @@ const AppContent = () => {
           }}
         >
           Background
+        </Button>
+        <Button
+          onClick={handleMuteToggle}
+          className="w-10 h-10 ml-2 rounded-full shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-70 hover:opacity-100 flex items-center justify-center"
+          style={{
+            background: `linear-gradient(135deg, ${currentTheme.color}20, ${currentTheme.color}10)`,
+            backdropFilter: 'blur(20px)',
+            borderColor: `${currentTheme.color}40`,
+            boxShadow: `0 8px 32px ${currentTheme.color}30, 0 0 0 1px rgba(255,255,255,0.1)`,
+            color: 'white'
+          }}
+          title={muted ? 'Unmute' : 'Mute'}
+        >
+          {muted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
         </Button>
       </div>
 

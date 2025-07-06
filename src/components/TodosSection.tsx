@@ -96,7 +96,6 @@ const TodosSection = () => {
               className="w-full max-w-md max-h-[80vh] transition-all duration-300 transform-gpu animate-fade-scale-in"
               style={{
                 background: 'linear-gradient(135deg, rgba(30,30,30,0.95), rgba(60,60,60,0.95))',
-                backdropFilter: 'blur(24px) saturate(1.8)',
                 border: '1px solid rgba(255,255,255,0.2)',
                 borderRadius: '24px',
                 boxShadow: `0 32px 64px ${currentTheme.color}20, 0 0 0 1px rgba(255,255,255,0.1)`
@@ -131,7 +130,7 @@ const TodosSection = () => {
                   {todos.map((todo, index) => (
                     <div
                       key={todo.id}
-                      className={`group p-4 rounded-2xl border transition-all duration-300 transform-gpu animate-fade-in ${
+                      className={`group p-2 rounded-2xl border transition-all duration-300 transform-gpu animate-fade-in ${
                         todo.completed
                           ? 'bg-white/30 border-white/30'
                           : 'bg-white/30 border-white/20'
@@ -159,11 +158,14 @@ const TodosSection = () => {
                           )}
                         </button>
                         
-                        <span className={`flex-1 font-inter transition-all duration-300 ${
-                          todo.completed 
-                            ? 'line-through opacity-60 text-white/60' 
-                            : 'text-white'
-                        }`}>
+                        <span
+                          className={`flex-1 font-sora font-semibold text-base md:text-lg transition-all duration-300 ${
+                            todo.completed 
+                              ? 'line-through opacity-80' 
+                              : 'text-white'
+                          }`}
+                          style={todo.completed ? { textDecorationColor: currentTheme.color, color: currentTheme.color } : {}}
+                        >
                           {todo.text}
                         </span>
                         
