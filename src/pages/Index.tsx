@@ -193,7 +193,7 @@ const AppContent = () => {
         </Button>
         <Button
           onClick={handleMuteToggle}
-          className="w-10 h-10 ml-2 rounded-full shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-70 hover:opacity-100 flex items-center justify-center"
+          className="w-10 h-10 ml-3 rounded-full shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-100 flex items-center justify-center ring-2 ring-white/40"
           style={{
             background: `linear-gradient(135deg, ${currentTheme.color}20, ${currentTheme.color}10)`,
             backdropFilter: 'blur(20px)',
