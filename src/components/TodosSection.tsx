@@ -89,7 +89,7 @@ const TodosSection = () => {
       {isPopupOpen && (
         <>
           <div 
-            className="fixed inset-0 bg-black/50 backdrop-blur-md z-40 transition-all duration-300 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/80 z-40 transition-all duration-300 flex items-center justify-center p-4"
             onClick={() => setIsPopupOpen(false)}
           >
             <div 
