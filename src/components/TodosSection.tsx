@@ -132,10 +132,10 @@ const TodosSection = () => {
                   {todos.map((todo, index) => (
                     <div
                       key={todo.id}
-                      className={`group p-4 rounded-2xl border transition-all duration-300 hover:scale-[1.02] transform-gpu animate-fade-in ${
+                      className={`group p-4 rounded-2xl border transition-all duration-300 transform-gpu animate-fade-in ${
                         todo.completed
                           ? 'bg-white/10 border-white/20'
-                          : 'bg-white/5 border-white/10 hover:bg-white/10'
+                          : 'bg-white/10 border-white/10'
                       }`}
                       style={{
                         animationDelay: `${index * 100}ms`,
@@ -145,7 +145,7 @@ const TodosSection = () => {
                       <div className="flex items-center gap-3">
                         <button
                           onClick={() => toggleTodo(todo.id)}
-                          className={`w-6 h-6 rounded-lg border-2 transition-all duration-300 flex items-center justify-center ${
+                          className={`w-6 h-6 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
                             todo.completed
                               ? 'border-transparent shadow-lg'
                               : 'border-white/60 hover:border-white/80 hover:scale-110 bg-white/10'
@@ -170,7 +170,7 @@ const TodosSection = () => {
                         
                         <button
                           onClick={() => deleteTodo(todo.id)}
-                          className="w-8 h-8 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100"
+                          className="w-8 h-8 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all duration-300 hover:scale-110"
                         >
                           <X className="w-4 h-4 mx-auto" />
                         </button>

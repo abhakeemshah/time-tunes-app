@@ -162,17 +162,16 @@ const AppContent = () => {
           - Glassmorphism design with backdrop blur
           - Positioned in bottom-right corner
       */}
-      <div className="opacity-70 hover:opacity-100 transition-all duration-300">
+      <div className="fixed bottom-4 right-4 z-30">
         <Button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed bottom-4 right-4 z-30 px-6 py-3 rounded-2xl font-sora font-medium"
+          className="px-6 py-3 rounded-2xl shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-70 hover:opacity-100 font-sora font-medium"
           style={{
-            // Glassmorphism styling
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))',
-            backdropFilter: 'blur(20px) saturate(1.8)',
-            border: '1px solid rgba(255,255,255,0.25)',
-            color: 'white',
-            boxShadow: '0 12px 24px rgba(255,255,255,0.1), 0 0 0 1px rgba(255,255,255,0.08)'
+            background: `linear-gradient(135deg, ${currentTheme.color}20, ${currentTheme.color}10)`,
+            backdropFilter: 'blur(20px)',
+            borderColor: `${currentTheme.color}40`,
+            boxShadow: `0 8px 32px ${currentTheme.color}30, 0 0 0 1px rgba(255,255,255,0.1)`,
+            color: 'white'
           }}
         >
           Background
