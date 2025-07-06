@@ -1,4 +1,3 @@
-
 /**
  * ─────────────────────────────────────────
  * 📝 TASKS SECTION: Redesigned modern interface
@@ -96,7 +95,7 @@ const TodosSection = () => {
             <div 
               className="w-full max-w-md max-h-[80vh] transition-all duration-300 transform-gpu animate-fade-scale-in"
               style={{
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))',
+                background: 'linear-gradient(135deg, rgba(30,30,30,0.95), rgba(60,60,60,0.95))',
                 backdropFilter: 'blur(24px) saturate(1.8)',
                 border: '1px solid rgba(255,255,255,0.2)',
                 borderRadius: '24px',
@@ -134,8 +133,8 @@ const TodosSection = () => {
                       key={todo.id}
                       className={`group p-4 rounded-2xl border transition-all duration-300 transform-gpu animate-fade-in ${
                         todo.completed
-                          ? 'bg-white/10 border-white/20'
-                          : 'bg-white/10 border-white/10'
+                          ? 'bg-white/30 border-white/30'
+                          : 'bg-white/30 border-white/20'
                       }`}
                       style={{
                         animationDelay: `${index * 100}ms`,

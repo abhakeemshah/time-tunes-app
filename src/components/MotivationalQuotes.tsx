@@ -134,11 +134,7 @@ const MotivationalQuotes = ({ isVisible }: MotivationalQuotesProps) => {
           isQuoteVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
         }`}
       >
-        {isLoading ? (
-          <div className="text-white/40 text-lg animate-pulse">
-            Loading inspiration...
-          </div>
-        ) : (
+        {isLoading ? null : (
           <>
             <p 
               className="text-white font-light text-2xl md:text-3xl lg:text-4xl tracking-wide leading-relaxed italic mb-4"
