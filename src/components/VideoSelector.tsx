@@ -35,30 +35,18 @@ interface Video {
 // 🎥 COMPLETE VIDEO LIBRARY: Curated focus backgrounds
 // ─────────────────────────────────────────
 export const videos: Video[] = [
-  // Free tier videos
-  { id: 'OEatxP2YujY', title: 'Rain Lofi Deep Focus', theme: 'emerald' },
-  { id: 'V-b9MirVx2w', title: 'Chillest Lofi Universe', theme: 'blue' },
-  { id: 'tK6CkwQKz4U', title: 'LofiMind Oasis', theme: 'red-orange' },
-  { id: 'aUm_OogP1nM', title: 'Soft Rain for Sleep', theme: 'rose' },
-  { id: '77Mw-nklgwI', title: 'Rain on Window', theme: 'purple' },
-  
-  // Premium tier videos
-  { id: 'bkN2p-a3q-s', title: 'Winter Forest', theme: 'blue', isPremium: true },
-  { id: 'yIQd2Ya0Ziw', title: 'Desert Sunset', theme: 'red-orange', isPremium: true },
-  { id: 'kRLWBOOXGAc', title: 'City Rain', theme: 'emerald', isPremium: true },
-  { id: 'eHnfJBGdUqU', title: 'Library Study', theme: 'purple', isPremium: true },
-  { id: 'RRM23vYG6NY', title: 'Beach Sunset', theme: 'rose', isPremium: true },
-  { id: 'hHW1oY26kxQ', title: 'Space Journey', theme: 'purple', isPremium: true },
-  { id: 'vQE0RWMQHHI', title: 'Japanese Garden', theme: 'emerald', isPremium: true },
-  { id: 'px3oRdTEEGU', title: 'Thunderstorm', theme: 'blue', isPremium: true },
-  { id: 'SIz6Xzzxy8s', title: 'Medieval Fantasy', theme: 'red-orange', isPremium: true },
-  { id: 'F6Mus1YD8Pg', title: 'Underwater World', theme: 'blue', isPremium: true },
-  { id: 'sZRfXLp-4eI', title: 'Autumn Forest', theme: 'red-orange', isPremium: true },
-  { id: 'Zbg5Wk0wrVc', title: 'Crystal Cave', theme: 'purple', isPremium: true },
-  { id: 'xbj8MuqHKe4', title: 'Fireplace Cozy', theme: 'rose', isPremium: true },
-  { id: 'W7fHJKMWyaE', title: 'Starry Night', theme: 'purple', isPremium: true },
-  { id: '1vj5xKZC9Rs', title: 'Tropical Paradise', theme: 'emerald', isPremium: true },
-  { id: 'x0vKfhi3rZY', title: 'Rain in Rustic Cabin', theme: 'blue', isPremium: true },
+  { id: 'MYPVQccHhAQ', title: 'Lofi Hip Hop Radio – Yellow', theme: 'yellow' },
+  { id: 'zhDwjnYZiCo', title: 'Lofi Chill – Green', theme: 'emerald' },
+  { id: '1fueZCTYkpA', title: 'Jazzhop Café – Golden Yellow', theme: 'yellow' },
+  { id: '9M4jZuqdw04', title: 'Lofi Chillhop – Blue', theme: 'blue' },
+  { id: '5I0ZrUKu59I', title: 'Lofi Chill – Lite Green', theme: 'emerald' },
+  { id: 'Fp5ghKduTK8', title: 'Lofi Chillhop – Green', theme: 'emerald' },
+  { id: '337OKHV3BRI', title: 'Lofi Chillhop – Yellow', theme: 'yellow' },
+  { id: 'QltODNFwp20', title: 'Lofi Chillhop – Purple', theme: 'purple' },
+  { id: 'CY9UFFhyeVQ', title: 'Chill Lofi – Yellow', theme: 'yellow' },
+  { id: 'CmhieO9eTt8', title: 'Chill Lofi – Orange', theme: 'orange' },
+  { id: 'g64BkZjSNBM', title: 'Chill Lofi – Red', theme: 'red' },
+  { id: 'kztxcbSVzD8', title: 'Chill Lofi – Pink', theme: 'pink' },
 ];
 
 interface VideoSelectorProps {
@@ -106,7 +94,7 @@ const VideoSelector = ({ selectedVideo, onVideoSelect }: VideoSelectorProps) => 
   };
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="h-full flex flex-col gap-4 overflow-y-auto px-2 py-2">
       {/* ─────────────────────────────────────────
           📱 FOLLOW PROMPT: Social gate modal
           ───────────────────────────────────────── */}
@@ -145,117 +133,107 @@ const VideoSelector = ({ selectedVideo, onVideoSelect }: VideoSelectorProps) => 
       )}
 
       {/* ─────────────────────────────────────────
-          🎬 VIDEO SLIDER: Horizontal scrolling video selection
+          🎬 VIDEO LIST: Vertical background selection
           ───────────────────────────────────────── */}
-      <div className="relative flex-1">
-        {/* Slider controls */}
-        <Button
-          onClick={() => scroll('left')}
-          className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-lg border border-white/30"
-          disabled={scrollPosition <= 0}
-        >
-          <ChevronLeft className="w-5 h-5 text-white" />
-        </Button>
-
-        <Button
-          onClick={() => scroll('right')}
-          className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-lg border border-white/30"
-        >
-          <ChevronRight className="w-5 h-5 text-white" />
-        </Button>
-
-        {/* Video grid with horizontal scroll */}
-        <div 
-          id="video-slider"
-          className="flex gap-4 overflow-x-auto overflow-y-hidden h-full pb-4 px-12 custom-scrollbar"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          onScroll={(e) => setScrollPosition(e.currentTarget.scrollLeft)}
-        >
-          {videos.map((video, index) => (
-            <div
-              key={video.id}
-              onClick={() => handleVideoClick(video)}
-              className={`relative group cursor-pointer rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105 transform-gpu flex-shrink-0 w-64 ${
-                selectedVideo === video.id
-                  ? 'ring-2 ring-white shadow-2xl scale-105'
-                  : 'hover:shadow-xl'
-              }`}
-              style={{
-                animationDelay: `${index * 50}ms`,
-                background: 'linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))',
-                backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255,255,255,0.2)'
-              }}
-            >
-              {/* Video Thumbnail */}
-              <div className="aspect-video bg-black/40 relative overflow-hidden">
-                <img
-                  src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
-                  alt={video.title}
-                  className="w-full h-full object-cover transition-all duration-300 group-hover:scale-110"
-                  style={{
-                    filter: video.isPremium && !hasFollowed ? 'blur(4px) grayscale(1)' : 'none'
-                  }}
-                />
-                
-                {/* Play Overlay */}
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-                  {video.isPremium && !hasFollowed ? (
-                    <Lock className="w-8 h-8 text-white" />
-                  ) : (
-                    <Play className="w-8 h-8 text-white" />
-                  )}
-                </div>
-
-                {/* Premium Badge */}
-                {video.isPremium && (
-                  <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                    PRO
-                  </div>
+      <div className="flex flex-col gap-4 overflow-y-auto max-h-[calc(100vh-120px)] pr-2 custom-scrollbar" style={{ scrollBehavior: 'smooth', WebkitOverflowScrolling: 'touch', scrollbarGutter: 'stable', overscrollBehavior: 'contain', willChange: 'transform' }}>
+        {videos.map((video, index) => (
+          <div
+            key={video.id}
+            onClick={() => handleVideoClick(video)}
+            className={`relative group cursor-pointer rounded-2xl overflow-hidden transition-all duration-500 transform-gpu flex-shrink-0 w-full ${
+              selectedVideo === video.id
+                ? 'ring-2 ring-white shadow-2xl scale-105'
+                : 'hover:shadow-xl'
+            }`}
+            style={{
+              animationDelay: `${index * 20}ms`,
+              background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.08))',
+              border: `3px solid ${getThemeColor(video.theme)}`,
+              boxShadow: '0 2px 16px rgba(0,0,0,0.10)',
+              minHeight: '150px',
+              height: '150px',
+              width: '100%',
+              padding: 0,
+              display: 'flex',
+              alignItems: 'stretch',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              willChange: 'transform',
+              transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+              transitionDuration: '220ms',
+            }}
+          >
+            {/* Video Thumbnail fills the whole box */}
+            <div className="relative w-full h-full flex-1">
+              <img
+                src={`https://img.youtube.com/vi/${video.id}/maxresdefault.jpg`}
+                alt={video.title}
+                className="w-full h-full object-cover transition-all duration-500"
+                style={{
+                  filter: video.isPremium && !hasFollowed ? 'blur(4px) grayscale(1)' : 'none',
+                  borderRadius: '1rem',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  willChange: 'transform',
+                  transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+                }}
+              />
+              {/* Glass overlay for selection effect */}
+              <div className={`absolute inset-0 rounded-2xl pointer-events-none transition-all duration-300 ${selectedVideo === video.id ? 'bg-white/10 backdrop-blur-sm' : ''}`}></div>
+              {/* Play or Lock Overlay */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
+                {video.isPremium && !hasFollowed ? (
+                  <Lock className="w-10 h-10 text-white drop-shadow-lg" />
+                ) : (
+                  <Play className="w-10 h-10 text-white drop-shadow-lg" />
                 )}
               </div>
-
-              {/* Video Info */}
-              <div className="p-4">
-                <h3 className="font-sora font-medium text-white text-sm truncate">
-                  {video.title}
-                </h3>
-                <div className="flex items-center justify-between mt-2">
-                  <div
-                    className="w-4 h-4 rounded-full border-2 border-white/50"
-                    style={{ backgroundColor: getThemeColor(video.theme) }}
-                  />
-                  {selectedVideo === video.id && (
-                    <div className="text-xs text-white/60 font-inter">
-                      Playing
-                    </div>
-                  )}
+              {/* Premium Badge */}
+              {video.isPremium && (
+                <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-white text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                  PRO
                 </div>
-              </div>
+              )}
+              {/* Playing indicator */}
+              {selectedVideo === video.id && (
+                <div className="absolute inset-0 flex items-center justify-center z-10" style={{height: '100%'}}>
+                  <span className="block w-1.5 rounded-full animate-eqbar1" style={{height: '40%', background: getThemeColor(video.theme)}}></span>
+                  <span className="block w-1.5 rounded-full animate-eqbar2" style={{height: '60%', background: getThemeColor(video.theme)}}></span>
+                  <span className="block w-1.5 rounded-full animate-eqbar3" style={{height: '35%', background: getThemeColor(video.theme)}}></span>
+                </div>
+              )}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
-      {/* Custom scrollbar styles */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          .custom-scrollbar::-webkit-scrollbar {
-            height: 4px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 2px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-          }
-        `
-      }} />
+      {/* Custom scrollbar styles for smooth, glassy look */}
+      <style>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 8px;
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(255,255,255,0.18);
+          border-radius: 8px;
+          border: 2px solid rgba(255,255,255,0.25);
+          box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: rgba(255,255,255,0.28);
+        }
+        .custom-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: rgba(255,255,255,0.18) transparent;
+        }
+        @keyframes eqbar1 { 0%,100%{height:70%} 50%{height:100%} }
+        @keyframes eqbar2 { 0%,100%{height:100%} 50%{height:60%} }
+        @keyframes eqbar3 { 0%,100%{height:60%} 50%{height:90%} }
+        .animate-eqbar1 { animation: eqbar1 0.8s infinite cubic-bezier(.4,0,.2,1); }
+        .animate-eqbar2 { animation: eqbar2 0.8s infinite cubic-bezier(.4,0,.2,1) 0.1s; }
+        .animate-eqbar3 { animation: eqbar3 0.8s infinite cubic-bezier(.4,0,.2,1) 0.2s; }
+      `}</style>
     </div>
   );
 };
@@ -267,7 +245,11 @@ const getThemeColor = (theme: string) => {
     'emerald': '#10b981',
     'blue': '#3b82f6',
     'purple': '#8b5cf6',
-    'rose': '#f43f5e'
+    'rose': '#f43f5e',
+    'yellow': '#fde047',
+    'orange': '#f59e42',
+    'red': '#dc2626',
+    'pink': '#ec4899',
   };
   return colors[theme] || '#ef4444';
 };

@@ -15,226 +15,175 @@
  * - Centered popup dialog
  */
 
-import React, { useState } from 'react';
-import { Plus, X, Check } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 
-interface Todo {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
+const notebookTasks = [
+  'Read a book',
+  'Complete the session',
+  'Take a short walk',
+];
+
+const initialTodos = notebookTasks.map((text, i) => ({
+  id: (i + 1).toString(),
+  text,
+  completed: false,
+  createdAt: new Date(),
+}));
 
 const TodosSection = () => {
   const { currentTheme } = useTheme();
-  const [todos, setTodos] = useState<Todo[]>([
-    { id: '1', text: 'Complete focus session', completed: false, createdAt: new Date() },
-    { id: '2', text: 'Review project notes', completed: false, createdAt: new Date() },
-    { id: '3', text: 'Plan tomorrow\'s goals', completed: false, createdAt: new Date() }
-  ]);
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [todos, setTodos] = useState(initialTodos);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [newTodo, setNewTodo] = useState('');
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState('');
 
-  const addTodo = () => {
-    if (newTodo.trim()) {
-      setTodos([...todos, {
-        id: Date.now().toString(),
-        text: newTodo.trim(),
-        completed: false,
-        createdAt: new Date()
-      }]);
-      setNewTodo('');
-    }
-  };
+  useEffect(() => {
+    const checkFullscreen = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+    document.addEventListener('fullscreenchange', checkFullscreen);
+    checkFullscreen();
+    return () => document.removeEventListener('fullscreenchange', checkFullscreen);
+  }, []);
 
-  const toggleTodo = (id: string) => {
-    setTodos(todos.map(todo => 
+  const toggleTodo = (id) => {
+    setTodos(todos.map(todo =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ));
   };
 
-  const deleteTodo = (id: string) => {
+  const addTodo = () => {
+    if (newTodo.trim()) {
+      setTodos([
+        ...todos,
+        { id: Date.now().toString(), text: newTodo.trim(), completed: false, createdAt: new Date() }
+      ]);
+      setNewTodo('');
+    }
+  };
+
+  const deleteTodo = (id) => {
     setTodos(todos.filter(todo => todo.id !== id));
   };
 
-  const completedCount = todos.filter(todo => todo.completed).length;
-  const totalCount = todos.length;
+  const startEdit = (id, text) => {
+    setEditingId(id);
+    setEditingText(text);
+  };
+
+  const saveEdit = (id) => {
+    setTodos(todos.map(todo =>
+      todo.id === id ? { ...todo, text: editingText } : todo
+    ));
+    setEditingId(null);
+    setEditingText('');
+  };
+
+  if (isFullscreen) return null;
 
   return (
     <>
-      {/* ─────────────────────────────────────────
-          🎯 FLOATING ACTION BUTTON: Modern design
-          ───────────────────────────────────────── */}
-      <div className="fixed bottom-20 right-4 z-30">
-        <Button
-          onClick={() => setIsPopupOpen(true)}
-          className="px-4 py-3 rounded-2xl shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-70 hover:opacity-100 font-sora font-medium"
-          style={{
-            background: `linear-gradient(135deg, ${currentTheme.color}20, ${currentTheme.color}10)`,
-            backdropFilter: 'blur(20px)',
-            borderColor: `${currentTheme.color}40`,
-            boxShadow: `0 8px 32px ${currentTheme.color}30, 0 0 0 1px rgba(255,255,255,0.1)`,
-            color: 'white'
-          }}
-        >
-          Tasks
-        </Button>
-      </div>
-
-      {/* ─────────────────────────────────────────
-          📱 CENTERED POPUP: Redesigned interface
-          ───────────────────────────────────────── */}
-      {isPopupOpen && (
-        <>
-          <div 
-            className="fixed inset-0 bg-black/80 z-40 transition-all duration-300 flex items-center justify-center p-4"
-            onClick={() => setIsPopupOpen(false)}
+      {/* Floating Tasks Button removed */}
+      {/* Notebook Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center" style={{ background: 'rgba(0,0,0,0.15)', backdropFilter: 'blur(2px)' }} onClick={() => setIsOpen(false)}>
+          <div
+            className="relative shadow-2xl animate-fade-scale-in"
+            style={{
+              width: 370,
+              minHeight: 500,
+              background: `repeating-linear-gradient(white, white 38px, #f3f3f3 39px, white 40px)`,
+              borderRadius: 18,
+              border: '2px solid #e0e0e0',
+              boxShadow: '0 8px 32px rgba(0,0,0,0.10)',
+            }}
+            onClick={e => e.stopPropagation()}
           >
-            <div 
-              className="w-full max-w-md max-h-[80vh] transition-all duration-300 transform-gpu animate-fade-scale-in"
-              style={{
-                background: 'linear-gradient(135deg, rgba(30,30,30,0.95), rgba(60,60,60,0.95))',
-                border: '1px solid rgba(255,255,255,0.2)',
-                borderRadius: '24px',
-                boxShadow: `0 32px 64px ${currentTheme.color}20, 0 0 0 1px rgba(255,255,255,0.1)`
-              }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-6 h-full flex flex-col">
-                {/* ─────────────────────────────────────────
-                    📊 HEADER: Improved design
-                    ───────────────────────────────────────── */}
-                <div className="flex items-center justify-between mb-6">
-                  <div>
-                    <h3 className="font-sora text-xl font-semibold text-white">
-                      Tasks
-                    </h3>
-                    <p className="text-white/60 text-sm font-inter">
-                      {completedCount} of {totalCount} completed
-                    </p>
-                  </div>
-                  <Button
-                    onClick={() => setIsPopupOpen(false)}
-                    className="w-10 h-10 p-0 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-all duration-300 hover:scale-110"
-                  >
-                    <X className="w-5 h-5" />
-                  </Button>
-                </div>
-
-                {/* ─────────────────────────────────────────
-                    📋 TASKS LIST: Improved card design with visible checkboxes
-                    ───────────────────────────────────────── */}
-                <div className="space-y-3 mb-6 max-h-60 overflow-y-auto custom-scrollbar pr-2">
-                  {todos.map((todo, index) => (
-                    <div
-                      key={todo.id}
-                      className={`group p-2 rounded-2xl border transition-all duration-300 transform-gpu animate-fade-in ${
-                        todo.completed
-                          ? 'bg-white/30 border-white/30'
-                          : 'bg-white/30 border-white/20'
-                      }`}
-                      style={{
-                        animationDelay: `${index * 100}ms`,
-                        backdropFilter: 'blur(10px)'
-                      }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <button
-                          onClick={() => toggleTodo(todo.id)}
-                          className={`w-6 h-6 rounded-full border-2 transition-all duration-300 flex items-center justify-center ${
-                            todo.completed
-                              ? 'border-transparent shadow-lg'
-                              : 'border-white/60 hover:border-white/80 hover:scale-110 bg-white/10'
-                          }`}
-                          style={todo.completed ? {
-                            background: `linear-gradient(135deg, ${currentTheme.color}, ${currentTheme.color}dd)`,
-                            boxShadow: `0 4px 12px ${currentTheme.color}40`
-                          } : {}}
-                        >
-                          {todo.completed && (
-                            <Check className="w-4 h-4 text-white" />
-                          )}
-                        </button>
-                        
-                        <span
-                          className={`flex-1 font-sora font-semibold text-base md:text-lg transition-all duration-300 ${
-                            todo.completed 
-                              ? 'line-through opacity-80' 
-                              : 'text-white'
-                          }`}
-                          style={todo.completed ? { textDecorationColor: currentTheme.color, color: currentTheme.color } : {}}
-                        >
-                          {todo.text}
-                        </span>
-                        
-                        <button
-                          onClick={() => deleteTodo(todo.id)}
-                          className="w-8 h-8 rounded-full bg-red-500/20 text-red-400 hover:bg-red-500/30 hover:text-red-300 transition-all duration-300 hover:scale-110"
-                        >
-                          <X className="w-4 h-4 mx-auto" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* ─────────────────────────────────────────
-                    ➕ ADD NEW TASK: Modern input design
-                    ───────────────────────────────────────── */}
-                <div className="flex gap-3">
-                  <input
-                    value={newTodo}
-                    onChange={(e) => setNewTodo(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && addTodo()}
-                    placeholder="Add a new task..."
-                    className="flex-1 px-4 py-3 text-white placeholder-white/50 bg-white/10 border border-white/20 rounded-2xl focus:outline-none focus:border-white/40 transition-all duration-300 font-inter"
-                    style={{
-                      backdropFilter: 'blur(10px)'
-                    }}
-                  />
-                  <Button
-                    onClick={addTodo}
-                    disabled={!newTodo.trim()}
-                    className="w-12 h-12 p-0 rounded-2xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:hover:scale-100"
-                    style={{
-                      background: `linear-gradient(135deg, ${currentTheme.color}, ${currentTheme.color}dd)`,
-                      boxShadow: `0 4px 12px ${currentTheme.color}40`
-                    }}
-                  >
-                    <Plus className="w-5 h-5 text-white" />
-                  </Button>
-                </div>
-              </div>
+            {/* Spiral binding */}
+            <div className="absolute left-0 top-0 h-full flex flex-col justify-between z-10" style={{ width: 24, padding: '18px 0' }}>
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} className="w-4 h-4 rounded-full bg-yellow-200 border-2 border-yellow-400 mx-auto mb-2" />
+              ))}
+            </div>
+            {/* Decorative leaves/branches */}
+            <div className="absolute left-8 right-8 top-0 flex justify-between z-10" style={{ height: 48 }}>
+              <span style={{ fontSize: 28, color: '#b5c99a' }}>🌿</span>
+              <span style={{ fontSize: 28, color: '#b5c99a' }}>🍃</span>
+              <span style={{ fontSize: 28, color: '#b5c99a' }}>🍂</span>
+            </div>
+            {/* Close button */}
+            <button onClick={() => setIsOpen(false)} className="absolute top-4 right-4 z-20 w-8 h-8 rounded-full bg-white/40 hover:bg-white/60 text-gray-700 flex items-center justify-center shadow">
+              <X className="w-5 h-5" />
+            </button>
+            {/* Title */}
+            <div className="text-center pt-8 pb-2" style={{ fontFamily: 'Indie Flower, cursive', fontSize: 22, color: '#888' }}>
+              to-do list
+            </div>
+            {/* Tasks */}
+            <ul className="px-10 pt-2 pb-8" style={{ fontFamily: 'Indie Flower, cursive', fontSize: 20, color: '#222', listStyle: 'disc', marginLeft: 24 }}>
+              {todos.map((todo, i) => (
+                <li
+                  key={todo.id}
+                  style={{
+                    textDecoration: todo.completed ? 'line-through' : 'none',
+                    color: todo.completed ? '#888' : '#222',
+                    cursor: 'pointer',
+                    marginBottom: 6,
+                    textDecorationThickness: 2,
+                    textDecorationColor: '#888',
+                    userSelect: 'none',
+                    transition: 'color 0.2s',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}
+                >
+                  <span onClick={() => toggleTodo(todo.id)} style={{ flex: 1 }}>{
+                    editingId === todo.id ? (
+                      <input
+                        value={editingText}
+                        onChange={e => setEditingText(e.target.value)}
+                        onBlur={() => saveEdit(todo.id)}
+                        onKeyDown={e => { if (e.key === 'Enter') saveEdit(todo.id); }}
+                        autoFocus
+                        style={{ fontFamily: 'Indie Flower, cursive', fontSize: 20, width: '90%' }}
+                      />
+                    ) : (
+                      todo.text
+                    )
+                  }</span>
+                  <button onClick={() => startEdit(todo.id, todo.text)} style={{ marginLeft: 4, background: 'none', border: 'none', cursor: 'pointer', color: '#aaa' }} title="Edit">
+                    ✏️
+                  </button>
+                  <button onClick={() => deleteTodo(todo.id)} style={{ marginLeft: 4, background: 'none', border: 'none', cursor: 'pointer', color: '#e57373' }} title="Delete">
+                    <X className="w-4 h-4" />
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {/* Add new task */}
+            <div className="flex gap-2 px-10 pb-6">
+              <input
+                value={newTodo}
+                onChange={e => setNewTodo(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter') addTodo(); }}
+                placeholder="Add a new task..."
+                style={{ fontFamily: 'Indie Flower, cursive', fontSize: 18, flex: 1, borderRadius: 8, border: '1px solid #eee', padding: '6px 12px' }}
+              />
+              <button onClick={addTodo} style={{ background: '#b5c99a', color: '#fff', border: 'none', borderRadius: 8, padding: '6px 16px', fontFamily: 'Indie Flower, cursive', fontSize: 18, cursor: 'pointer' }}>
+                Add
+              </button>
             </div>
           </div>
-        </>
+        </div>
       )}
-
-      {/* ─────────────────────────────────────────
-          🎨 CUSTOM SCROLLBAR: Themed scrollbar styles
-          ───────────────────────────────────────── */}
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          .custom-scrollbar::-webkit-scrollbar {
-            width: 4px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: ${currentTheme.color};
-            border-radius: 2px;
-          }
-          .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: ${currentTheme.color}dd;
-          }
-        `
-      }} />
     </>
   );
 };
 
 export default TodosSection;
+

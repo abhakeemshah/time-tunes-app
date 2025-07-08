@@ -1,4 +1,3 @@
-
 /**
  * ─────────────────────────────────────────────────────────────────────────────
  * 🎨 THEME CONTEXT - GLOBAL COLOR THEME MANAGEMENT
@@ -105,6 +104,43 @@ const themes: Theme[] = [
     gradient: 'from-blue-400 via-blue-500 to-indigo-600', // Ocean gradient
     color: '#3b82f6', // Blue-500 hex value
     glow: 'drop-shadow-[0_0_20px_rgba(59,130,246,0.8)]' // Blue glow effect
+  },
+  // New themes for video backgrounds
+  {
+    id: 'yellow',
+    primary: 'bg-yellow-400',
+    secondary: 'bg-yellow-300',
+    accent: 'border-yellow-400/60',
+    gradient: 'from-yellow-300 via-yellow-400 to-yellow-500',
+    color: '#fde047',
+    glow: 'drop-shadow-[0_0_20px_rgba(253,224,71,0.8)]'
+  },
+  {
+    id: 'orange',
+    primary: 'bg-orange-500',
+    secondary: 'bg-orange-400',
+    accent: 'border-orange-500/60',
+    gradient: 'from-orange-400 via-orange-500 to-yellow-500',
+    color: '#f59e42',
+    glow: 'drop-shadow-[0_0_20px_rgba(245,158,66,0.8)]'
+  },
+  {
+    id: 'red',
+    primary: 'bg-red-600',
+    secondary: 'bg-red-500',
+    accent: 'border-red-600/60',
+    gradient: 'from-red-500 via-red-600 to-pink-500',
+    color: '#dc2626',
+    glow: 'drop-shadow-[0_0_20px_rgba(220,38,38,0.8)]'
+  },
+  {
+    id: 'pink',
+    primary: 'bg-pink-400',
+    secondary: 'bg-pink-300',
+    accent: 'border-pink-400/60',
+    gradient: 'from-pink-300 via-pink-400 to-pink-500',
+    color: '#ec4899',
+    glow: 'drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]'
   },
   
   // ─────────────────────────────────────────────────────────────────────────────

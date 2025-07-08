@@ -136,6 +136,17 @@ const YouTubeBackground = ({
     return () => clearInterval(interval);
   }, [audioEnabled, volume]);
 
+  // Instantly update volume when changed
+  useEffect(() => {
+    if (audioEnabled && iframeRef.current?.contentWindow && volume !== undefined) {
+      const volumeLevel = Math.max(0, Math.min(100, volume));
+      iframeRef.current.contentWindow.postMessage(
+        `{"event":"command","func":"setVolume","args":[${volumeLevel}]}`,
+        '*'
+      );
+    }
+  }, [volume, audioEnabled]);
+
   // Enable audio on first user interaction
   useEffect(() => {
     if (audioEnabled) {

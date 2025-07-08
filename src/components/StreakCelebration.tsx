@@ -13,38 +13,18 @@
  * - Exactly 3-second duration
  */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Trophy, Flame, Star } from 'lucide-react';
 
 interface StreakCelebrationProps {
   isVisible: boolean;
   streakCount: number;
-  onComplete: () => void;
 }
 
-const StreakCelebration = ({ isVisible, streakCount, onComplete }: StreakCelebrationProps) => {
-  const [animationPhase, setAnimationPhase] = useState(0);
-
-  useEffect(() => {
-    if (isVisible) {
-      const timer1 = setTimeout(() => setAnimationPhase(1), 100);
-      const timer2 = setTimeout(() => setAnimationPhase(2), 500);
-      const timer3 = setTimeout(() => setAnimationPhase(3), 1200);
-      const timer4 = setTimeout(() => {
-        setAnimationPhase(0);
-        onComplete();
-      }, 5000); // Show for 5 seconds
-
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-        clearTimeout(timer3);
-        clearTimeout(timer4);
-      };
-    }
-  }, [isVisible, onComplete]);
-
+const StreakCelebration = ({ isVisible, streakCount }: StreakCelebrationProps) => {
   if (!isVisible) return null;
+  // We'll just use a static animationPhase for now (always fully visible)
+  const animationPhase = 3;
 
   const getMilestoneMessage = (count: number) => {
     if (count === 1) return "First Focus Session! 🎯";
@@ -108,7 +88,7 @@ const StreakCelebration = ({ isVisible, streakCount, onComplete }: StreakCelebra
               <div className="flex items-center gap-3 bg-white/20 backdrop-blur-lg rounded-3xl px-8 py-4">
                 <Flame className="w-8 h-8 text-orange-400 animate-pulse" />
                 <span className="font-inter text-3xl font-bold">{streakCount}</span>
-                <span className="font-inter text-xl">Streak</span>
+                <span className="font-inter text-xl">{streakCount === 1 ? 'Streak' : 'Streaks'}</span>
               </div>
             </div>
           </div>
@@ -155,3 +135,4 @@ const StreakCelebration = ({ isVisible, streakCount, onComplete }: StreakCelebra
 };
 
 export default StreakCelebration;
+

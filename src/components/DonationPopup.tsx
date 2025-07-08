@@ -1,4 +1,3 @@
-
 /**
  * ─────────────────────────────────────────
  * 💝 DONATION POPUP: Support and donation modal
@@ -76,32 +75,29 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
       
       {/* Modal */}
       <div 
-        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white/10 backdrop-blur-lg border border-white/30 rounded-2xl p-6 shadow-2xl w-80"
-        style={{ boxShadow: `0 25px 50px ${currentTheme.color}15, 0 0 0 1px rgba(255,255,255,0.1)` }}
+        className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-gradient-to-br from-white/20 via-white/10 to-white/5 backdrop-blur-2xl border border-white/30 rounded-3xl p-6 shadow-2xl w-80"
+        style={{ boxShadow: `0 25px 50px ${currentTheme.color}30, 0 0 0 1px rgba(255,255,255,0.1)` }}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-sora text-lg font-semibold text-white">
-            Support the Project
+          <h2 className="font-sora text-2xl font-bold text-white flex items-center gap-2">
+            <span style={{ fontSize: 28 }}>💖</span> Support the Project
           </h2>
           <Button
             onClick={onClose}
-            className="bg-white/20 hover:bg-white/30 text-white w-8 h-8 p-0 rounded-lg backdrop-blur-sm border border-white/20"
+            className="bg-white/30 hover:bg-white/40 text-white w-10 h-10 p-0 rounded-full shadow"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </Button>
         </div>
 
         {/* Mission statement */}
-        <div className="text-center mb-6">
-          <h3 className="font-sora text-base font-medium text-white mb-3">
-            Buy me a subscription to an educational app
+        <div className="text-center mb-4">
+          <h3 className="font-sora text-base font-semibold text-white mb-2">
+            To keep this free, please donate!
           </h3>
-          <p className="text-white/70 text-sm leading-relaxed font-inter">
-            International payments & student discounts are not available in my country (Pakistan).
-          </p>
-          <p className="text-white/60 text-xs mt-2 font-inter">
-            Follow me on X: @100xd3v for premium content behind paywall
+          <p className="text-white/80 text-sm font-inter">
+            Donations help cover domain and hosting costs.
           </p>
         </div>
 
@@ -110,36 +106,30 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
           {wallets.map((wallet) => (
             <div 
               key={wallet.type}
-              className="p-3 rounded-lg border border-white/20 bg-white/5 hover:bg-white/10"
+              className="p-4 rounded-xl border border-white/30 bg-white/10 hover:bg-white/20 shadow-lg flex flex-col gap-1"
+              style={{ boxShadow: `0 2px 12px ${wallet.color}30, 0 0 0 1px ${wallet.color}20` }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium text-white text-sm font-sora">{wallet.type}</span>
+                <span className="font-bold text-white text-base font-sora flex items-center gap-2">
+                  <span style={{ color: wallet.color, fontSize: 18 }}>💸</span>
+                  {wallet.type}
+                </span>
                 <Button
                   onClick={() => copyToClipboard(wallet.address, wallet.type)}
-                  className="bg-white/20 hover:bg-white/30 text-white w-7 h-7 p-0 rounded"
+                  className="bg-white/30 hover:bg-white/40 text-white w-8 h-8 p-0 rounded-full shadow"
                 >
                   {copiedAddress === wallet.type ? (
-                    <Check className="w-3 h-3" style={{ color: currentTheme.color }} />
+                    <Check className="w-4 h-4" style={{ color: wallet.color }} />
                   ) : (
-                    <Copy className="w-3 h-3" />
+                    <Copy className="w-4 h-4" />
                   )}
                 </Button>
               </div>
-              <p className="text-xs text-white/60 font-mono break-all leading-relaxed">
+              <p className="text-xs text-white/80 font-mono break-all leading-relaxed tracking-wide">
                 {wallet.address}
               </p>
             </div>
           ))}
-
-          {/* Contact button */}
-          <a
-            href="mailto:abdhakeemshah@gmail.com"
-            className="w-full bg-white/10 hover:bg-white/20 text-white border border-white/30 backdrop-blur-sm p-3 rounded-lg flex items-center justify-center font-inter"
-            style={{ boxShadow: `0 4px 15px ${currentTheme.color}20` }}
-          >
-            <Mail className="w-4 h-4 mr-2" />
-            Contact me
-          </a>
         </div>
 
         {/* Footer */}

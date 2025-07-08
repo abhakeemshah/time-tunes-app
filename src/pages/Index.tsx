@@ -35,7 +35,7 @@
  * - Volume and video selection state
  */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import PomodoroTimer from '@/components/PomodoroTimer';
 import YouTubeBackground from '@/components/YouTubeBackground';
@@ -88,6 +88,7 @@ const AppContent = () => {
   // Achievement celebration states
   const [showStreakCelebration, setShowStreakCelebration] = useState(false);
   const [celebrationStreak, setCelebrationStreak] = useState(0);
+  const isCelebratingRef = useRef(false); // Prevent retriggers during celebration
 
   // Ensure theme always matches selected background video
   useEffect(() => {
@@ -107,9 +108,15 @@ const AppContent = () => {
    * - Updates streak display
    */
   const handlePomodoroComplete = () => {
+    if (isCelebratingRef.current) return; // Block retriggers during celebration
+    isCelebratingRef.current = true;
     const newStreak = incrementStreak(); // Increment and get new streak count
     setCelebrationStreak(newStreak); // Set celebration count
     setShowStreakCelebration(true); // Show celebration animation
+    setTimeout(() => {
+      setShowStreakCelebration(false);
+      isCelebratingRef.current = false; // Allow new celebrations
+    }, 3000);
   };
 
   // Mute toggle handler
@@ -177,25 +184,36 @@ const AppContent = () => {
           - Glassmorphism design with backdrop blur
           - Positioned in bottom-right corner
       */}
-      <div className="fixed bottom-4 right-4 z-30 flex items-center gap-2">
+      <div className="fixed bottom-4 right-4 z-30 flex items-stretch gap-1">
         <Button
           onClick={() => setIsSidebarOpen(true)}
-          className="px-6 py-3 rounded-2xl shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-70 hover:opacity-100 font-sora font-medium"
+          className="relative px-6 py-3 rounded-2xl shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-30 hover:opacity-100 font-sora font-medium overflow-hidden"
           style={{
-            background: `linear-gradient(135deg, ${currentTheme.color}20, ${currentTheme.color}10)`,
-            backdropFilter: 'blur(20px)',
-            borderColor: `${currentTheme.color}40`,
-            boxShadow: `0 8px 32px ${currentTheme.color}30, 0 0 0 1px rgba(255,255,255,0.1)`,
-            color: 'white'
+            background: `url(https://img.youtube.com/vi/${selectedVideo}/maxresdefault.jpg) center center / cover no-repeat`,
+            border: '2px solid',
+            borderColor: 'rgba(255,255,255,0.2)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.1), 0 0 0 1px rgba(255,255,255,0.1)',
+            color: 'white',
+            position: 'relative',
           }}
         >
-          Background
+          <span
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: `linear-gradient(135deg, ${currentTheme.color}99, ${currentTheme.color}33)`,
+              opacity: 0.5,
+              zIndex: 1,
+              pointerEvents: 'none',
+            }}
+          />
+          <span style={{ position: 'relative', zIndex: 2 }}>Background</span>
         </Button>
         <Button
           onClick={handleMuteToggle}
-          className="w-10 h-10 ml-3 rounded-full shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-100 flex items-center justify-center ring-2 ring-white/40"
+          className="w-10 h-10 ml-3 rounded-2xl shadow-2xl border-2 transition-all duration-300 hover:scale-110 transform-gpu opacity-100 flex items-center justify-center ring-2 ring-white/40"
           style={{
-            background: `linear-gradient(135deg, ${currentTheme.color}20, ${currentTheme.color}10)`,
+            background: `linear-gradient(135deg, ${currentTheme.color}10, rgba(255,255,255,0.10))`,
             backdropFilter: 'blur(20px)',
             borderColor: `${currentTheme.color}40`,
             boxShadow: `0 8px 32px ${currentTheme.color}30, 0 0 0 1px rgba(255,255,255,0.1)`,
@@ -295,7 +313,6 @@ const AppContent = () => {
       <StreakCelebration
         isVisible={showStreakCelebration}
         streakCount={celebrationStreak}
-        onComplete={() => setShowStreakCelebration(false)}
       />
 
       {/* ─────────────────────────────────────────────────────────────────────────────

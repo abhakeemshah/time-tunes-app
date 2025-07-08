@@ -36,12 +36,26 @@ const VideoSidebar = ({ isOpen, onClose, selectedVideo, onVideoSelect }: VideoSi
 
   if (!isOpen) return null;
 
+  // Map video theme to theme id for setTheme
+  const themeMap: Record<string, string> = {
+    'red-orange': 'red-orange',
+    'emerald': 'emerald',
+    'blue': 'blue',
+    'purple': 'purple',
+    'rose': 'rose',
+    'yellow': 'red-orange', // Map yellow to red-orange (closest match)
+  };
+
   // ─────────────────────────────────────────
   // 🎥 VIDEO SELECTION: Handle selection with theme auto-switching
   // ─────────────────────────────────────────
   const handleVideoSelect = (videoId: string, theme?: string) => {
     onVideoSelect(videoId);
-    setTheme(theme || 'emerald'); // Auto-switch theme based on video, default to green
+    if (theme) {
+      setTheme(themeMap[theme] || 'emerald');
+    } else {
+      setTheme('emerald');
+    }
     onClose(); // Auto-close after selection with animation
   };
 

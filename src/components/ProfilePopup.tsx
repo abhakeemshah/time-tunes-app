@@ -1,4 +1,3 @@
-
 /**
  * ─────────────────────────────────────────
  * 👤 PROFILE POPUP: Clean user profile with 3D animations
@@ -79,7 +78,7 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
       >
         {/* 3D Modal Container - Centered */}
         <div 
-          className="w-96 transition-all duration-300 transform-gpu animate-fade-scale-in"
+          className="w-80 transition-all duration-300 transform-gpu animate-fade-scale-in"
           style={{
             background: 'linear-gradient(135deg, rgba(255,255,255,0.18), rgba(255,255,255,0.10))',
             backdropFilter: 'blur(28px) saturate(1.8)',
@@ -91,7 +90,7 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="p-8">
+          <div className="p-4">
             {/* Header with 3D effect */}
             <div className="flex items-center justify-between mb-8">
               <h2 
