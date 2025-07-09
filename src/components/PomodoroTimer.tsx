@@ -40,9 +40,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Play, Pause, RotateCcw, Music, Volume2, VolumeX } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
-import { useStreak } from '@/hooks/useStreak';
 import MotivationalQuotes from './MotivationalQuotes';
-import StreakCelebration from './StreakCelebration';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 📋 TYPE DEFINITIONS
@@ -82,7 +80,6 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   // 🎨 HOOKS AND CONTEXT
   // ─────────────────────────────────────────────────────────────────────────────
   const { currentTheme } = useTheme(); // Get current color theme
-  const { streak, incrementStreak } = useStreak(); // Get streak management functions
   
   // ─────────────────────────────────────────────────────────────────────────────
   // 🎛️ STATE MANAGEMENT
@@ -100,8 +97,6 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   
   // UI state management
   const [isMinimized, setIsMinimized] = useState(false); // Timer minimization state
-  const [showCelebration, setShowCelebration] = useState(false); // Celebration visibility
-  const [celebrationStreak, setCelebrationStreak] = useState(0); // Streak count for celebration
   const [isBoxOpen, setIsBoxOpen] = useState(true); // Box animation state
   
   // Ref for interval cleanup
@@ -129,12 +124,6 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
           } 
           // Session completed (both minutes and seconds are 0)
           else {
-            // Only increment streak for completed work sessions
-            if (prev.isSession) {
-              const newStreak = incrementStreak(); // Increment streak counter
-              setCelebrationStreak(newStreak); // Set celebration count
-              setShowCelebration(true); // Trigger celebration animation
-            }
             
             // Switch to opposite session type (work <-> break)
             const newIsSession = !prev.isSession;
@@ -163,7 +152,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
         clearInterval(intervalRef.current);
       }
     };
-  }, [timer.isActive, incrementStreak]);
+  }, [timer.isActive]);
 
   // ─────────────────────────────────────────────────────────────────────────────
   // 🎮 CONTROL FUNCTIONS
@@ -250,13 +239,6 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
         {/* Motivational quotes overlay for inspiration during work */}
         <MotivationalQuotes isVisible={true} />
         
-        {/* Streak celebration overlay */}
-        <StreakCelebration 
-          isVisible={showCelebration}
-          streakCount={celebrationStreak}
-          onComplete={() => setShowCelebration(false)}
-        />
-        
         {/* Compact timer bar at top of screen */}
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-40">
           <div 
@@ -281,10 +263,6 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
               
               {/* Control buttons */}
               <div className="flex items-center gap-2">
-                {/* Streak indicator */}
-                <div className="flex items-center gap-1 text-white/60 text-sm">
-                  🔥 {streak}
-                </div>
                 
                 {/* Pause button */}
                 <Button
@@ -332,55 +310,33 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
       {/* Hide motivational quotes in full view */}
       <MotivationalQuotes isVisible={false} />
       
-      {/* Streak celebration overlay */}
-      <StreakCelebration 
-        isVisible={showCelebration}
-        streakCount={celebrationStreak}
-        onComplete={() => setShowCelebration(false)}
-      />
-      
       {/* Main timer container - centered on screen */}
-      <div className="flex flex-col items-center justify-center min-h-screen p-8">
+      <div className="flex flex-col items-center justify-center h-screen p-0">
         {/* Timer Box with Animation */}
         <div 
           className={`backdrop-blur-xl border border-white/30 rounded-3xl p-6 shadow-2xl w-80 transition-all duration-500 ease-in-out ${
             isBoxOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-90'
           }`}
-          style={{ 
-            boxShadow: `0 24px 48px ${currentTheme.color}20, 0 0 0 1px rgba(255,255,255,0.1)`,
-            background: `linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.08))`,
-            backdropFilter: 'blur(24px) saturate(1.8)',
+          style={{
+            boxShadow: `0 16px 32px ${currentTheme.color}20, 0 0 0 1px rgba(255,255,255,0.08)`,
+            background: `rgba(255,255,255,0.10)`,
+            backdropFilter: 'blur(32px) saturate(2)',
             transform: isBoxOpen ? 'scale(1)' : 'scale(0.95)',
+            width: '18rem',
+            minWidth: '18rem',
+            maxWidth: '18rem',
+            height: '13rem',
+            minHeight: '13rem',
+            maxHeight: '13rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
         >
-          <div className="text-center">
-            {/* ─────────────────────────────────────────────────────────────────────────────
-                🔥 STREAK DISPLAY
-                ─────────────────────────────────────────────────────────────────────────────
-                Shows current streak count with fire emoji
-            */}
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="flex items-center gap-1 text-white/80">
-                <span className="text-2xl">🔥</span>
-                <span 
-                  className="font-inter text-lg font-semibold"
-                  style={{
-                    textShadow: `0 0 3px ${currentTheme.color}30`
-                  }}
-                >
-                  {streak}
-                </span>
-                <span className="font-inter text-sm">streak</span>
-              </div>
-            </div>
-            
-            {/* ─────────────────────────────────────────────────────────────────────────────
-                ⏰ MAIN TIME DISPLAY
-                ─────────────────────────────────────────────────────────────────────────────
-                Large, prominent time display with theme-colored glow
-            */}
+          <div className="flex flex-col items-center justify-center flex-1 gap-1 w-full">
             <div 
-              className="font-sora text-5xl font-bold text-white mb-6"
+              className="font-sora text-7xl font-bold text-white text-center"
               style={{ 
                 color: currentTheme.color,
                 textShadow: `0 0 6px ${currentTheme.color}40`
@@ -388,35 +344,28 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
             >
               {formatTime(timer.minutes, timer.seconds)}
             </div>
-          </div>
-          
-          {/* ─────────────────────────────────────────────────────────────────────────────
-              🎮 CONTROL BUTTONS
-              ─────────────────────────────────────────────────────────────────────────────
-              Primary timer controls (play/pause, reset)
-          */}
-          <div className="flex justify-center gap-3 mb-4">
-            {/* Play/Pause Button */}
-            <Button
-              onClick={toggleTimer}
-              className="text-white px-6 py-3 rounded-2xl font-inter font-medium"
-              style={{
-                background: `linear-gradient(135deg, ${currentTheme.color}, ${currentTheme.color}dd)`,
-                boxShadow: `0 8px 16px ${currentTheme.color}40`
-              }}
-            >
-              {timer.isActive ? <Pause className="w-4 h-4 mr-2" /> : <Play className="w-4 h-4 mr-2" />}
-              {timer.isActive ? 'Pause' : 'Start'}
-            </Button>
-            
-            {/* Reset Button */}
-            <Button
-              onClick={resetTimer}
-              className="bg-white/20 hover:bg-white/30 text-white px-6 py-3 rounded-2xl font-inter font-medium"
-            >
-              <RotateCcw className="w-4 h-4 mr-2" />
-              Reset
-            </Button>
+            <div className="flex justify-center gap-x-4 w-full">
+              {/* Play/Pause Button */}
+              <Button
+                onClick={toggleTimer}
+                className="text-white py-2 rounded-2xl font-inter font-medium text-base w-24"
+                style={{
+                  background: `linear-gradient(135deg, ${currentTheme.color}, ${currentTheme.color}dd)`,
+                  boxShadow: `0 8px 16px ${currentTheme.color}40`
+                }}
+              >
+                {timer.isActive ? <Pause className="w-4 h-4 mr-0" /> : <Play className="w-4 h-4 mr-0" />}
+                {timer.isActive ? 'Pause' : 'Start'}
+              </Button>
+              {/* Reset Button */}
+              <Button
+                onClick={resetTimer}
+                className="bg-white/20 hover:bg-white/30 text-white py-2 rounded-2xl font-inter font-medium text-base w-24"
+              >
+                <RotateCcw className="w-4 h-4 mr-0" />
+                Reset
+              </Button>
+            </div>
           </div>
         </div>
       </div>

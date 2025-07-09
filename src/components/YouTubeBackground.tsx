@@ -87,7 +87,7 @@ const YouTubeBackground = ({
       const scaleY = viewportHeight / (viewportWidth / aspectRatio);
       
       // Use the larger scale to ensure full coverage
-      const optimalScale = Math.max(scaleX, scaleY, 1.5);
+      const optimalScale = Math.max(scaleX, scaleY, 1.05);
       setScale(optimalScale);
     };
 
@@ -203,7 +203,7 @@ const YouTubeBackground = ({
         allowFullScreen
         style={{
           transform: `scale(${scale})`,
-          filter: 'brightness(0.7)',
+          filter: 'brightness(0.9)',
           aspectRatio: '16/9',
           minWidth: '100vw',
           minHeight: '100vh',
@@ -212,7 +212,7 @@ const YouTubeBackground = ({
       />
       
       {/* Overlay for text contrast */}
-      <div className="absolute inset-0 bg-black/30" />
+      <div className="absolute inset-0 bg-black/10" />
     </div>
   );
 };

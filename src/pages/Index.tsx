@@ -44,9 +44,7 @@ import TodosSection from '@/components/TodosSection';
 import UserActions from '@/components/UserActions';
 import ProfilePopup from '@/components/ProfilePopup';
 import DonationPopup from '@/components/DonationPopup';
-import StreakCelebration from '@/components/StreakCelebration';
 import { ThemeProvider, useTheme } from '@/contexts/ThemeContext';
-import { useStreak } from '@/hooks/useStreak';
 import { videos } from '@/components/VideoSelector'; // Import the videos array for theme lookup
 import { Volume2, VolumeX } from 'lucide-react';
 
@@ -69,7 +67,6 @@ const AppContent = () => {
   // 🎨 THEME AND STREAK MANAGEMENT
   // ─────────────────────────────────────────────────────────────────────────────
   const { currentTheme, setTheme } = useTheme(); // Get current color theme and setTheme function
-  const { streak, incrementStreak } = useStreak(); // Get streak data and increment function
   
   // ─────────────────────────────────────────────────────────────────────────────
   // 🎛️ UI STATE MANAGEMENT
@@ -85,11 +82,6 @@ const AppContent = () => {
   const [muted, setMuted] = useState(false);
   const [lastVolume, setLastVolume] = useState(30);
   
-  // Achievement celebration states
-  const [showStreakCelebration, setShowStreakCelebration] = useState(false);
-  const [celebrationStreak, setCelebrationStreak] = useState(0);
-  const isCelebratingRef = useRef(false); // Prevent retriggers during celebration
-
   // Ensure theme always matches selected background video
   useEffect(() => {
     if (!setTheme) return;
@@ -110,7 +102,6 @@ const AppContent = () => {
   const handlePomodoroComplete = () => {
     if (isCelebratingRef.current) return; // Block retriggers during celebration
     isCelebratingRef.current = true;
-    const newStreak = incrementStreak(); // Increment and get new streak count
     setCelebrationStreak(newStreak); // Set celebration count
     setShowStreakCelebration(true); // Show celebration animation
     setTimeout(() => {
@@ -156,25 +147,7 @@ const AppContent = () => {
           - Uses theme colors for glow effects
           - Positioned absolutely in top-left corner
       */}
-      <div className="fixed top-4 left-4 z-30 flex items-center gap-2">
-        {/* Render fire emojis for streak count (max 10 visible) */}
-        {Array.from({ length: Math.min(streak, 10) }).map((_, i) => (
-          <span key={i} className="text-2xl animate-pulse">🔥</span>
-        ))}
-        {/* Show additional count if streak > 10 */}
-        {streak > 10 && (
-          <span 
-            className="text-white font-inter font-bold text-xl glow-number"
-            style={{
-              // Subtle glow effect using current theme color
-              textShadow: `0 0 8px ${currentTheme.color}40, 0 0 4px ${currentTheme.color}20`,
-              filter: `drop-shadow(0 0 3px ${currentTheme.color}30)`
-            }}
-          >
-            +{streak - 10}
-          </span>
-        )}
-      </div>
+      <div className="fixed top-4 left-4 z-30 flex items-center gap-2" />
 
       {/* ─────────────────────────────────────────────────────────────────────────────
           🎬 BACKGROUND SELECTOR BUTTON - BOTTOM RIGHT
@@ -299,20 +272,6 @@ const AppContent = () => {
       <DonationPopup 
         isOpen={isDonationOpen}
         onClose={() => setIsDonationOpen(false)}
-      />
-
-      {/* ─────────────────────────────────────────────────────────────────────────────
-          🎉 STREAK CELEBRATION OVERLAY
-          ─────────────────────────────────────────────────────────────────────────────
-          Full-screen celebration animation for achievements.
-          - Triggers on Pomodoro completion
-          - 3-second duration with confetti effects
-          - Milestone-based messages
-          - Auto-hides after completion
-      */}
-      <StreakCelebration
-        isVisible={showStreakCelebration}
-        streakCount={celebrationStreak}
       />
 
       {/* ─────────────────────────────────────────────────────────────────────────────
