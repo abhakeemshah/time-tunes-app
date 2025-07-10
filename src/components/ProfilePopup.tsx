@@ -68,12 +68,6 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
       url: 'mailto:abdhakeemshah@gmail.com',
       label: 'Email',
       color: '#fff'
-    },
-    {
-      icon: GithubIcon,
-      url: 'https://github.com/abhakeemshah',
-      label: 'GitHub',
-      color: '#fff'
     }
   ];
 
