@@ -307,7 +307,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
       <div className="flex flex-col items-center justify-center h-screen p-0">
         <div 
           className={`backdrop-blur-xl border border-white/30 rounded-3xl p-6 shadow-2xl w-80 transition-all duration-800 ease-in-out ${
-            isAnimatingIn ? 'animate-fade-in' : isBoxOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-90'
+            isAnimatingIn ? 'animate-fade-in' : (!isMinimized && isBoxOpen) ? 'scale-100 opacity-100' : (isMinimized && !isBoxOpen) ? 'scale-95 opacity-90' : 'scale-100 opacity-100'
           }`}
           style={{
             boxShadow: `0 16px 32px ${currentTheme.color}20, 0 0 0 1px rgba(255,255,255,0.08)`,
