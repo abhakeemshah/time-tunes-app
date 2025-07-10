@@ -39,8 +39,14 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
   // 📱 SOCIAL LINKS: External profile links
   // ─────────────────────────────────────────
   const XIcon = () => (
-    <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+    <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="currentColor">
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+    </svg>
+  );
+
+  const GithubIcon = () => (
+    <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2C6.477 2 2 6.484 2 12.021c0 4.428 2.865 8.184 6.839 9.504.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.004.07 1.532 1.032 1.532 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.339-2.221-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.987 1.029-2.687-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.025A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.295 2.748-1.025 2.748-1.025.546 1.378.202 2.397.1 2.65.64.7 1.028 1.594 1.028 2.687 0 3.847-2.337 4.695-4.566 4.944.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.749 0 .267.18.577.688.48C19.138 20.2 22 16.447 22 12.021 22 6.484 17.523 2 12 2z"/>
     </svg>
   );
 
@@ -49,19 +55,25 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
       icon: Instagram,
       url: 'https://instagram.com/hakeem.shxh',
       label: 'Instagram',
-      color: '#E4405F'
+      color: '#fff'
     },
     {
       icon: XIcon,
       url: 'https://x.com/100xd3v',
       label: 'X (Twitter)',
-      color: '#000000'
+      color: '#fff'
     },
     {
       icon: Mail,
       url: 'mailto:abdhakeemshah@gmail.com',
       label: 'Email',
-      color: '#EA4335'
+      color: '#fff'
+    },
+    {
+      icon: GithubIcon,
+      url: 'https://github.com/abhakeemshah',
+      label: 'GitHub',
+      color: '#fff'
     }
   ];
 
@@ -93,14 +105,21 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
           <div className="p-4">
             {/* Header with 3D effect */}
             <div className="flex items-center justify-between mb-8">
-              <h2 
-                className="font-sora text-2xl font-semibold text-white"
+              <h2
                 style={{
+                  fontFamily: 'Aliquam, cursive',
+                  fontWeight: 700,
+                  fontSize: '1.2rem',
+                  whiteSpace: 'nowrap',
+                  color: 'white',
+                  letterSpacing: '0.04em',
+                  textAlign: 'center',
+                  width: '100%',
                   textShadow: '0 4px 8px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)',
                   transform: 'translateZ(10px)'
                 }}
               >
-                Made with love
+                Made with love <span style={{fontSize: '1.2em', color: '#ff5e8e'}}>♥</span>
               </h2>
               <Button
                 onClick={onClose}
@@ -121,19 +140,18 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
                   href={social.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-300 transform-gpu hover:scale-110 hover:-rotate-6 border border-white/20"
-                  style={{ 
-                    background: `linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06))`,
-                    backdropFilter: 'blur(10px)',
-                    boxShadow: `0 8px 20px ${currentTheme.color}25, inset 0 1px 0 rgba(255,255,255,0.2)`,
-                    transform: 'translateZ(15px)',
-                    transformStyle: 'preserve-3d'
+                  className="group flex items-center justify-center transition-all duration-300 hover:scale-110"
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    boxShadow: 'none',
                   }}
                   title={social.label}
                 >
-                  <social.icon 
-                    className="w-7 h-7 text-white transition-all duration-300 group-hover:scale-110" 
+                  <social.icon
+                    className="w-7 h-7 text-white transition-all duration-300 group-hover:scale-110"
                     style={{
+                      color: '#fff',
                       filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))',
                       transform: 'translateZ(5px)'
                     }}
@@ -143,15 +161,15 @@ const ProfilePopup = ({ isOpen, onClose }: ProfilePopupProps) => {
             </div>
 
             {/* Footer message with glow */}
-            <div className="text-center">
-              <p 
-                className="text-lg text-white/90 font-inter font-medium"
+            <div className="flex flex-col items-center justify-center mb-2">
+              <p
+                className="text-xs text-white/80 font-inter text-center"
                 style={{
-                  textShadow: `0 2px 8px ${currentTheme.color}40, 0 1px 2px rgba(0,0,0,0.3)`,
-                  transform: 'translateZ(5px)'
+                  whiteSpace: 'nowrap',
+                  margin: 0,
                 }}
               >
-                Let's build something amazing together! 🚀
+                Connect with me for more free tools like this
               </p>
             </div>
           </div>

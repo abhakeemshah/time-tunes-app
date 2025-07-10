@@ -54,11 +54,6 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
   // ─────────────────────────────────────────
   const wallets = [
     {
-      type: 'USDT',
-      address: 'TTkF8TxyvCoHhXTDE2cVnUrrRqT8jcAxZy',
-      color: '#26a17b'
-    },
-    {
       type: 'BTC',
       address: '1J3fRTE2fJgMJ3e1Ava6tNkEZHbGK7CJkY',
       color: '#f7931a'
@@ -80,8 +75,20 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="font-sora text-2xl font-bold text-white flex items-center gap-2">
-            <span style={{ fontSize: 28 }}>💖</span> Support the Project
+          <h2 className="font-sora text-2xl font-bold text-white flex items-center gap-2"
+            style={{
+              fontFamily: 'Aliquam, cursive',
+              fontWeight: 700,
+              fontSize: '1rem',
+              whiteSpace: 'nowrap',
+              color: 'white',
+              letterSpacing: '0.04em',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+            }}
+          >
+            <span style={{ fontSize: 20 }}>💖</span> Support the Project
           </h2>
           <Button
             onClick={onClose}
@@ -93,12 +100,9 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
 
         {/* Mission statement */}
         <div className="text-center mb-4">
-          <h3 className="font-sora text-base font-semibold text-white mb-2">
-            To keep this free, please donate!
+          <h3 className="font-sora text-base font-semibold text-white mb-2" style={{whiteSpace: 'nowrap'}}>
+            Support us to keep this app free
           </h3>
-          <p className="text-white/80 text-sm font-inter">
-            Donations help cover domain and hosting costs.
-          </p>
         </div>
 
         {/* Wallet addresses */}
@@ -133,9 +137,9 @@ const DonationPopup = ({ isOpen, onClose }: DonationPopupProps) => {
         </div>
 
         {/* Footer */}
-        <div className="text-center">
+        <div className="text-center mt-4">
           <p className="text-xs text-white/60 font-inter">
-            Every contribution helps maintain this free tool ✨
+            Unfortunately, other international payments are not available in my region.
           </p>
         </div>
       </div>

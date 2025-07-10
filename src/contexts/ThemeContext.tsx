@@ -130,8 +130,8 @@ const themes: Theme[] = [
     secondary: 'bg-red-500',
     accent: 'border-red-600/60',
     gradient: 'from-red-500 via-red-600 to-pink-500',
-    color: '#dc2626',
-    glow: 'drop-shadow-[0_0_20px_rgba(220,38,38,0.8)]'
+    color: '#cfc64a',
+    glow: 'drop-shadow-[0_0_20px_rgba(207,198,74,0.8)]'
   },
   {
     id: 'pink',
@@ -152,8 +152,8 @@ const themes: Theme[] = [
     secondary: 'bg-purple-400', 
     accent: 'border-purple-400/40',
     gradient: 'from-purple-400 via-purple-500 to-pink-600', // Royal gradient
-    color: '#8b5cf6', // Purple-500 hex value
-    glow: 'drop-shadow-[0_0_20px_rgba(139,92,246,0.8)]', // Purple glow effect
+    color: 'rgb(231,96,212)', // Purple-500 hex value
+    glow: 'drop-shadow-[0_0_20px_rgba(231,96,212,0.8)]', // Purple glow effect
     isPremium: true // Requires social verification
   },
   {

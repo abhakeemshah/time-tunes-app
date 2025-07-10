@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { User, Heart } from 'lucide-react';
+import { User, Heart, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 interface UserActionsProps {

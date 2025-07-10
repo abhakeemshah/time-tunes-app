@@ -18,7 +18,7 @@
  * - Perspective and 3D transforms
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
@@ -63,7 +63,7 @@ const VideoSidebar = ({ isOpen, onClose, selectedVideo, onVideoSelect }: VideoSi
     <>
       {/* 3D Backdrop overlay with depth */}
       <div 
-        className="fixed inset-0 bg-black/60 backdrop-blur-md z-40 transition-all duration-400 ease-out"
+        className="fixed inset-0 bg-black/60 backdrop-blur-md z-40 opacity-100 pointer-events-auto"
         onClick={onClose}
         style={{
           backdropFilter: 'blur(8px) saturate(1.2)',
@@ -73,13 +73,12 @@ const VideoSidebar = ({ isOpen, onClose, selectedVideo, onVideoSelect }: VideoSi
       
       {/* 3D Sidebar panel - slides from right with perspective */}
       <div 
-        className="fixed right-0 top-0 h-full w-96 z-50 shadow-2xl transform-gpu transition-all duration-400 ease-out"
+        className="fixed right-0 top-0 h-full w-80 z-50 shadow-2xl transform-gpu translate-x-0"
         style={{
           background: 'linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.08))',
           backdropFilter: 'blur(20px) saturate(1.5)',
           border: '1px solid rgba(255,255,255,0.2)',
           borderLeft: '2px solid rgba(255,255,255,0.3)',
-          transform: 'translateX(0) rotateY(-2deg)',
           transformOrigin: 'right center',
           perspective: '1000px',
           boxShadow: '-20px 0 60px rgba(0,0,0,0.3), inset 1px 0 0 rgba(255,255,255,0.1)'
@@ -88,11 +87,14 @@ const VideoSidebar = ({ isOpen, onClose, selectedVideo, onVideoSelect }: VideoSi
         <div className="p-6 h-full flex flex-col">
           {/* Header with 3D effect */}
           <div className="flex items-center justify-between mb-6">
-            <h2 
-              className="font-sora text-xl font-semibold text-white drop-shadow-lg"
+            <h2
+              className="text-base drop-shadow-lg w-full text-center whitespace-nowrap"
               style={{
+                fontFamily: 'Aliquam, cursive',
+                color: 'white',
                 textShadow: '0 4px 8px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)',
-                transform: 'translateZ(10px)'
+                transform: 'translateZ(10px)',
+                letterSpacing: '0.04em',
               }}
             >
               Choose Background

@@ -101,6 +101,8 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   
   // Ref for interval cleanup
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  // Ref for alarm audio
+  const alarmRef = useRef<HTMLAudioElement | null>(null);
 
   // ─────────────────────────────────────────────────────────────────────────────
   // ⏰ TIMER LOGIC EFFECT
@@ -125,7 +127,13 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
           // Session completed (both minutes and seconds are 0)
           else {
             
-            // Switch to opposite session type (work <-> break)
+            // Play alarm
+            if (alarmRef.current) {
+              alarmRef.current.currentTime = 0;
+              alarmRef.current.play();
+            }
+            // Do not auto-start next session; let user start manually
+            // Switch session type, but set isActive: false
             const newIsSession = !prev.isSession;
             const newMinutes = newIsSession ? prev.sessionLength : prev.breakLength;
             
@@ -134,7 +142,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
               minutes: newMinutes,
               seconds: 0,
               isSession: newIsSession,
-              isActive: true, // Continue running for next session
+              isActive: false,
             };
           }
         });
@@ -307,6 +315,8 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
    */
   return (
     <>
+      {/* Alarm audio element */}
+      <audio ref={alarmRef} src="/alaram.m4a" preload="auto" />
       {/* Hide motivational quotes in full view */}
       <MotivationalQuotes isVisible={false} />
       
@@ -350,7 +360,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
                 onClick={toggleTimer}
                 className="text-white py-2 rounded-2xl font-inter font-medium text-base w-24"
                 style={{
-                  background: `linear-gradient(135deg, ${currentTheme.color}, ${currentTheme.color}dd)`,
+                  background: currentTheme.color,
                   boxShadow: `0 8px 16px ${currentTheme.color}40`
                 }}
               >
