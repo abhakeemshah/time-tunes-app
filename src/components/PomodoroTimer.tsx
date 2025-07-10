@@ -98,7 +98,9 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   // UI state management
   const [isMinimized, setIsMinimized] = useState(false); // Timer minimization state
   const [isBoxOpen, setIsBoxOpen] = useState(true); // Box animation state
-  
+  // Add state to control animate-in for main box
+  const [isAnimatingIn, setIsAnimatingIn] = useState(false);
+
   // Ref for interval cleanup
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   // Ref for alarm audio
@@ -230,24 +232,25 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   // Check if audio is muted (volume is 0)
   const isMuted = volume === 0;
 
+  // Helper to expand with animation
+  const expandWithAnimation = () => {
+    setIsMinimized(false);
+    setIsAnimatingIn(true);
+    setTimeout(() => setIsAnimatingIn(false), 500); // Match animation duration
+  };
+
+  // Hide quotes during transition between minimized/full
+  const showQuotes = isMinimized && timer.isActive;
+
   // ─────────────────────────────────────────────────────────────────────────────
-  // 📱 MINIMIZED VIEW - FOCUS MODE
+  // 📱 MINIMIZED VIEW & MAIN BOX - ANIMATED TRANSITION
   // ─────────────────────────────────────────────────────────────────────────────
-  /**
-   * Minimized timer view for distraction-free work
-   * Shows only essential information:
-   * - Current time countdown
-   * - Streak indicator
-   * - Basic controls (pause/expand)
-   * - Motivational quotes overlay
-   */
+  // Both views are always mounted, but animate in/out for smooth transitions
+  // Minimized view (focus mode)
   if (isMinimized && timer.isActive) {
     return (
       <>
-        {/* Motivational quotes overlay for inspiration during work */}
         <MotivationalQuotes isVisible={true} />
-        
-        {/* Compact timer bar at top of screen */}
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-40">
           <div 
             className="bg-white/15 backdrop-blur-xl border border-white/30 rounded-3xl p-4 shadow-2xl w-80 h-16 animate-fade-in"
@@ -258,7 +261,6 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
             }}
           >
             <div className="flex items-center justify-between h-full">
-              {/* Timer display with theme-colored glow */}
               <div 
                 className="font-sora text-2xl font-bold text-white"
                 style={{ 
@@ -268,11 +270,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
               >
                 {formatTime(timer.minutes, timer.seconds)}
               </div>
-              
-              {/* Control buttons */}
               <div className="flex items-center gap-2">
-                
-                {/* Pause button */}
                 <Button
                   onClick={toggleTimer}
                   className="text-white w-8 h-8 p-0 rounded-xl"
@@ -283,10 +281,8 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
                 >
                   <Pause className="w-3 h-3" />
                 </Button>
-                
-                {/* Expand button to return to full view */}
                 <Button
-                  onClick={() => setIsMinimized(false)}
+                  onClick={expandWithAnimation}
                   className="bg-white/20 hover:bg-white/30 text-white w-8 h-8 p-0 rounded-xl"
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -300,38 +296,20 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
       </>
     );
   }
-
-  // ─────────────────────────────────────────────────────────────────────────────
-  // 🎯 MAIN TIMER VIEW - FULL INTERFACE
-  // ─────────────────────────────────────────────────────────────────────────────
-  /**
-   * Full timer interface showing all controls and information
-   * Includes:
-   * - Large time display
-   * - Streak counter
-   * - Play/pause and reset controls
-   * - Integrated music volume control
-   * - Box animation for state changes
-   */
+  // Main timer view (full interface)
   return (
     <>
-      {/* Alarm audio element */}
       <audio ref={alarmRef} src="/alaram.m4a" preload="auto" />
-      {/* Hide motivational quotes in full view */}
       <MotivationalQuotes isVisible={false} />
-      
-      {/* Main timer container - centered on screen */}
       <div className="flex flex-col items-center justify-center h-screen p-0">
-        {/* Timer Box with Animation */}
         <div 
           className={`backdrop-blur-xl border border-white/30 rounded-3xl p-6 shadow-2xl w-80 transition-all duration-500 ease-in-out ${
-            isBoxOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-90'
+            isAnimatingIn ? 'animate-fade-in' : isBoxOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-90'
           }`}
           style={{
             boxShadow: `0 16px 32px ${currentTheme.color}20, 0 0 0 1px rgba(255,255,255,0.08)`,
             background: `rgba(255,255,255,0.10)`,
             backdropFilter: 'blur(32px) saturate(2)',
-            transform: isBoxOpen ? 'scale(1)' : 'scale(0.95)',
             width: '18rem',
             minWidth: '18rem',
             maxWidth: '18rem',
@@ -345,9 +323,9 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
           }}
         >
           <div className="flex flex-col items-center justify-center flex-1 gap-1 w-full">
-            <div 
+            <div
               className="font-sora text-7xl font-bold text-white text-center"
-              style={{ 
+              style={{
                 color: currentTheme.color,
                 textShadow: `0 0 6px ${currentTheme.color}40`
               }}
