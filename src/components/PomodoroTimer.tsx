@@ -174,12 +174,10 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
    */
   const toggleTimer = () => {
     setTimer(prev => ({ ...prev, isActive: !prev.isActive }));
-    // Minimize timer when starting for distraction-free work
+    // Only minimize when starting, not when pausing
     if (!timer.isActive) {
       setIsMinimized(true);
       setIsBoxOpen(false); // Close box animation
-    } else {
-      setIsBoxOpen(true); // Open box animation when pausing
     }
   };
 
@@ -242,12 +240,17 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   // Hide quotes during transition between minimized/full
   const showQuotes = isMinimized && timer.isActive;
 
+  // Add a separate function for pause/resume in minimized bar
+  const pauseResumeOnly = () => {
+    setTimer(prev => ({ ...prev, isActive: !prev.isActive }));
+  };
+
   // ─────────────────────────────────────────────────────────────────────────────
   // 📱 MINIMIZED VIEW & MAIN BOX - ANIMATED TRANSITION
   // ─────────────────────────────────────────────────────────────────────────────
   // Both views are always mounted, but animate in/out for smooth transitions
   // Minimized view (focus mode)
-  if (isMinimized && timer.isActive) {
+  if (isMinimized) {
     return (
       <>
         <MotivationalQuotes isVisible={true} />
@@ -272,14 +275,14 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
               </div>
               <div className="flex items-center gap-2">
                 <Button
-                  onClick={toggleTimer}
+                  onClick={pauseResumeOnly}
                   className="text-white w-8 h-8 p-0 rounded-xl"
                   style={{
                     background: `linear-gradient(135deg, ${currentTheme.color}, ${currentTheme.color}dd)`,
                     boxShadow: `0 4px 12px ${currentTheme.color}40`
                   }}
                 >
-                  <Pause className="w-3 h-3" />
+                  {timer.isActive ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
                 </Button>
                 <Button
                   onClick={expandWithAnimation}
