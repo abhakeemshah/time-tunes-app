@@ -63,7 +63,7 @@
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^0.9.3",
     "zod": "^3.23.8",
-    "react-smooth-scrollbar": "^8.7.4",
+    "react-smooth-scrollbar": "^8.6.3",
     "react-scrollbars-custom": "^4.0.31"
   },
   "devDependencies": {
