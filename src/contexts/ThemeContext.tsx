@@ -142,6 +142,51 @@ const themes: Theme[] = [
     color: '#ec4899',
     glow: 'drop-shadow-[0_0_20px_rgba(236,72,153,0.8)]'
   },
+  {
+    id: 'custom-6ba5b5',
+    primary: 'bg-[#6ba5b5]',
+    secondary: 'bg-[#6ba5b5]/80',
+    accent: 'border-[#6ba5b5]/40',
+    gradient: 'from-[#6ba5b5] via-[#8fd3e8] to-[#b2eaf7]',
+    color: '#6ba5b5',
+    glow: 'drop-shadow-[0_0_20px_rgba(107,165,181,0.8)]',
+  },
+  {
+    id: 'custom-cfa93a',
+    primary: 'bg-[#cfa93a]',
+    secondary: 'bg-[#cfa93a]/80',
+    accent: 'border-[#cfa93a]/40',
+    gradient: 'from-[#cfa93a] via-[#ffe066] to-[#fff3bf]',
+    color: '#cfa93a',
+    glow: 'drop-shadow-[0_0_20px_rgba(207,169,58,0.8)]',
+  },
+  {
+    id: 'custom-bda348',
+    primary: 'bg-[#bda348]',
+    secondary: 'bg-[#bda348]/80',
+    accent: 'border-[#bda348]/40',
+    gradient: 'from-[#bda348] via-[#ffe066] to-[#fff3bf]',
+    color: '#bda348',
+    glow: 'drop-shadow-[0_0_20px_rgba(189,163,72,0.8)]',
+  },
+  {
+    id: 'custom-adc75f',
+    primary: 'bg-[#adc75f]',
+    secondary: 'bg-[#adc75f]/80',
+    accent: 'border-[#adc75f]/40',
+    gradient: 'from-[#adc75f] via-[#d4e09b] to-[#f6f7d7]',
+    color: '#adc75f',
+    glow: 'drop-shadow-[0_0_20px_rgba(173,199,95,0.8)]',
+  },
+  {
+    id: 'custom-f5da53',
+    primary: 'bg-[#f5da53]',
+    secondary: 'bg-[#f5da53]/80',
+    accent: 'border-[#f5da53]/40',
+    gradient: 'from-[#f5da53] via-[#fff6b7] to-[#fffbe6]',
+    color: '#f5da53',
+    glow: 'drop-shadow-[0_0_20px_rgba(245,218,83,0.8)]',
+  },
   
   // ─────────────────────────────────────────────────────────────────────────────
   // 💎 PREMIUM TIER THEMES (Require social follow verification)

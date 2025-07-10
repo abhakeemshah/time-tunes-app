@@ -36,11 +36,16 @@ interface Video {
 // ─────────────────────────────────────────
 export const videos: Video[] = [
   { id: 'MYPVQccHhAQ', title: 'Lofi Hip Hop Radio – Yellow', theme: 'yellow' },
-  { id: 'zhDwjnYZiCo', title: 'Lofi Chill – Green', theme: 'emerald' },
+  { id: 'zhDwjnYZiCo', title: 'Lofi Chill – Green', theme: 'custom-adc75f' },
+  // Insert last 5 videos here
+  { id: '_Bb5TK8CX-Q', title: 'Orange Theme', theme: 'orange' },
+  { id: 'cu959m5z07Q', title: 'Blue Theme', theme: 'blue' },
+  { id: 'sTGeUZzXSjM', title: 'Light Purple Theme', theme: 'custom-cfa93a' },
+  { id: 'KbswPudB454', title: 'Custom #6ba5b5 Theme', theme: 'custom-6ba5b5' },
+  { id: 'CY9UFFhyeVQ', title: 'Chill Lofi – Yellow', theme: 'custom-f5da53' },
+  // Continue with the rest
   { id: 'Fp5ghKduTK8', title: 'Lofi Chillhop – Green', theme: 'emerald' },
   { id: '337OKHV3BRI', title: 'Lofi Chillhop – Yellow', theme: 'yellow' },
-  { id: 'QltODNFwp20', title: 'Lofi Chillhop – Purple', theme: 'purple' },
-  { id: 'CY9UFFhyeVQ', title: 'Chill Lofi – Yellow', theme: 'yellow' },
   { id: 'g64BkZjSNBM', title: 'Chill Lofi – Red', theme: 'red' },
   { id: 'kztxcbSVzD8', title: 'Chill Lofi – Pink', theme: 'pink' },
 ];

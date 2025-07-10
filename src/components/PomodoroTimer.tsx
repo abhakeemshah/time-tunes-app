@@ -101,10 +101,28 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   // Add state to control animate-in for main box
   const [isAnimatingIn, setIsAnimatingIn] = useState(false);
 
+  // Todos always visible, no toggle button
+
+  // State for toggling todos in full mode
+  const [showTodos, setShowTodos] = useState(true); // visible by default
+
   // Ref for interval cleanup
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   // Ref for alarm audio
   const alarmRef = useRef<HTMLAudioElement | null>(null);
+
+  // Refs for todo inputs
+  const todoRefs = [useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null)];
+
+  // Handle Enter key to move to next todo
+  const handleTodoKeyDown = (idx: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (idx < todoRefs.length - 1) {
+        todoRefs[idx + 1].current?.focus();
+      }
+    }
+  };
 
   // ─────────────────────────────────────────────────────────────────────────────
   // ⏰ TIMER LOGIC EFFECT
@@ -237,8 +255,18 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
     setTimeout(() => setIsAnimatingIn(false), 800); // Slower animate-in (was 500)
   };
 
-  // Hide quotes during transition between minimized/full
-  const showQuotes = isMinimized && timer.isActive;
+  // Simple 3-item todo list for minimized mode
+  const [todos, setTodos] = useState([
+    { text: '', done: false },
+    { text: '', done: false },
+    { text: '', done: false },
+  ]);
+  const handleTodoChange = (idx: number, value: string) => {
+    setTodos(todos => todos.map((todo, i) => i === idx ? { ...todo, text: value } : todo));
+  };
+  const handleTodoToggle = (idx: number) => {
+    setTodos(todos => todos.map((todo, i) => i === idx ? { ...todo, done: !todo.done } : todo));
+  };
 
   // Add a separate function for pause/resume in minimized bar
   const pauseResumeOnly = () => {
@@ -253,7 +281,67 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   if (isMinimized) {
     return (
       <>
-        <MotivationalQuotes isVisible={true} />
+        {/* Simple 3-item todo list in minimized mode */}
+        <div className="fixed inset-0 flex flex-col items-center justify-center z-40 w-full pointer-events-none">
+          <div className="w-80 flex flex-col gap-4 items-center pointer-events-auto">
+            {todos.map((todo, idx) => (
+              <label key={idx} className="flex items-center w-full gap-3 cursor-pointer select-none">
+                <span className="relative flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    checked={todo.done}
+                    onChange={() => handleTodoToggle(idx)}
+                    className="appearance-none w-6 h-6 rounded-full transition-colors duration-200 focus:ring-0 focus:outline-none"
+                    style={{
+                      boxShadow: 'none',
+                      outline: 'none',
+                      border: 'none',
+                      background: todo.done
+                        ? `${currentTheme.color}44` // theme color, more transparent for dimmed effect
+                        : 'rgba(255,255,255,0.10)', // subtle unfilled
+                      borderRadius: '9999px',
+                    }}
+                  />
+                  <span className={`absolute left-1 top-1 w-4 h-4 pointer-events-none ${todo.done ? 'todo-tick-animate' : ''}`} style={{display: 'inline-block', opacity: todo.done ? 1 : 0, transform: todo.done ? 'scale(1)' : 'scale(0.7)', transition: 'opacity 0.2s, transform 0.2s'}}>
+                    <svg viewBox="0 0 16 16" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{width: '100%', height: '100%'}}>
+                      <path d="M3 8l3 3 7-7" />
+                    </svg>
+                  </span>
+                </span>
+                <input
+                  ref={todoRefs[idx]}
+                  type="text"
+                  value={todo.text}
+                  onChange={e => handleTodoChange(idx, e.target.value)}
+                  onKeyDown={e => handleTodoKeyDown(idx, e)}
+                  maxLength={40}
+                  className={`flex-1 bg-transparent font-light text-2xl md:text-3xl tracking-wide leading-relaxed py-2 px-2 focus:ring-0 focus:outline-none border-none shadow-none border-b ${todo.done ? 'line-through todo-completed' : ''}`}
+                  style={{
+                    color: todo.done ? 'rgba(255,255,255,0.45)' : 'rgba(255,255,255,1)',
+                    textShadow: '0 1.5px 6px rgba(0,0,0,0.18)',
+                    opacity: 0.9,
+                    fontWeight: 400,
+                    letterSpacing: '0.01em',
+                    lineHeight: 1.4,
+                    boxShadow: 'none',
+                    outline: 'none',
+                    border: 'none',
+                    background: 'transparent',
+                    borderBottom: '1.5px solid rgba(255,255,255,0.18)',
+                    fontFamily: `'Playfair Display', Georgia, serif`,
+                    fontStyle: 'italic',
+                    fontWeight: 300,
+                    textDecoration: todo.done ? `line-through` : undefined,
+                    textDecorationColor: todo.done ? currentTheme.color : undefined,
+                    textDecorationThickness: todo.done ? '2px' : undefined,
+                    transition: 'text-decoration-color 0.3s, color 0.3s, text-decoration-thickness 0.3s',
+                    ...(todo.done ? { '--todo-strike': currentTheme.color } : {}),
+                  }}
+                />
+              </label>
+            ))}
+          </div>
+        </div>
         <div className="fixed top-8 left-1/2 transform -translate-x-1/2 z-40">
           <div 
             className="bg-white/15 backdrop-blur-xl border border-white/30 rounded-3xl p-4 shadow-2xl w-80 h-16 animate-fade-in"
@@ -276,7 +364,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
               <div className="flex items-center gap-2">
                 <Button
                   onClick={pauseResumeOnly}
-                  className="text-white w-8 h-8 p-0 rounded-xl"
+                  className="text-white w-8 h-8 p-0 rounded-xl active:scale-95 transition-transform duration-100"
                   style={{
                     background: `linear-gradient(135deg, ${currentTheme.color}, ${currentTheme.color}dd)`,
                     boxShadow: `0 4px 12px ${currentTheme.color}40`
@@ -286,7 +374,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
                 </Button>
                 <Button
                   onClick={expandWithAnimation}
-                  className="bg-white/20 hover:bg-white/30 text-white w-8 h-8 p-0 rounded-xl"
+                  className="bg-white/20 hover:bg-white/30 text-white w-8 h-8 p-0 rounded-xl active:scale-95 transition-transform duration-100"
                 >
                   <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
@@ -302,7 +390,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   // Main timer view (full interface)
   return (
     <>
-      <audio ref={alarmRef} src="/alaram.m4a" preload="auto" />
+      <audio ref={alarmRef} src="/alram.mp3" preload="auto" />
       <MotivationalQuotes isVisible={false} />
       <div className="flex flex-col items-center justify-center h-screen p-0">
         <div 
@@ -335,11 +423,11 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
             >
               {formatTime(timer.minutes, timer.seconds)}
             </div>
-            <div className="flex justify-center gap-x-4 w-full">
+            <div className="flex justify-center gap-x-4 w-full mt-1">
               {/* Play/Pause Button */}
               <Button
                 onClick={toggleTimer}
-                className="text-white py-2 rounded-2xl font-inter font-medium text-base w-24"
+                className="text-white py-2 rounded-2xl font-inter font-medium text-base w-24 active:scale-95 transition-transform duration-100"
                 style={{
                   background: currentTheme.color,
                   boxShadow: `0 8px 16px ${currentTheme.color}40`
@@ -351,7 +439,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
               {/* Reset Button */}
               <Button
                 onClick={resetTimer}
-                className="bg-white/20 hover:bg-white/30 text-white py-2 rounded-2xl font-inter font-medium text-base w-24"
+                className="bg-white/20 hover:bg-white/30 text-white py-2 rounded-2xl font-inter font-medium text-base w-24 active:scale-95 transition-transform duration-100"
               >
                 <RotateCcw className="w-4 h-4 mr-0" />
                 Reset
@@ -360,6 +448,37 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
           </div>
         </div>
       </div>
+      {/* Tick and line-through animation styles */}
+      <style>{`
+        @keyframes tick-in {
+          0% { transform: scale(0.5); opacity: 0; }
+          60% { transform: scale(1.2); opacity: 1; }
+          100% { transform: scale(1); opacity: 1; }
+        }
+        .todo-tick-animate {
+          animation: tick-in 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        .todo-completed {
+          position: relative;
+          transition: color 0.3s;
+        }
+        .todo-completed::after {
+          content: '';
+          position: absolute;
+          left: 0; top: 50%;
+          width: 100%; height: 2px;
+          background: var(--todo-strike, #fff);
+          opacity: 0.8;
+          transform: scaleX(0);
+          transform-origin: left;
+          transition: background 0.3s;
+          animation: line-draw-fill 0.5s cubic-bezier(0.4,0,0.2,1) forwards;
+        }
+        @keyframes line-draw-fill {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+      `}</style>
     </>
   );
 };
