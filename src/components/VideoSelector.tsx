@@ -35,8 +35,8 @@ interface Video {
 // 🎥 COMPLETE VIDEO LIBRARY: Curated focus backgrounds
 // ─────────────────────────────────────────
 export const videos: Video[] = [
-  { id: 'MYPVQccHhAQ', title: 'Lofi Hip Hop Radio – Yellow', theme: 'yellow' },
   { id: 'zhDwjnYZiCo', title: 'Lofi Chill – Green', theme: 'custom-adc75f' },
+  { id: 'MYPVQccHhAQ', title: 'Lofi Hip Hop Radio – Yellow', theme: 'yellow' },
   // Insert last 5 videos here
   { id: '_Bb5TK8CX-Q', title: 'Orange Theme', theme: 'orange' },
   { id: 'cu959m5z07Q', title: 'Blue Theme', theme: 'blue' },
@@ -141,9 +141,9 @@ const VideoSelector = ({ selectedVideo, onVideoSelect }: VideoSelectorProps) => 
               />
               <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
                 {video.isPremium && !hasFollowed ? (
-                  <Lock className="w-10 h-10 text-white drop-shadow-lg" />
+                  <Lock className="w-10 h-10 drop-shadow-lg" style={{ color: getThemeColor(video.theme) }} />
                 ) : (
-                  <Play className="w-10 h-10 text-white drop-shadow-lg" />
+                  <Play className="w-10 h-10 drop-shadow-lg" style={{ color: getThemeColor(video.theme) }} />
                 )}
               </div>
               {video.isPremium && (
@@ -203,14 +203,19 @@ const VideoSelector = ({ selectedVideo, onVideoSelect }: VideoSelectorProps) => 
 const getThemeColor = (theme: string) => {
   if (theme === 'purple') return 'rgb(245,120,235)'; // brighter purple
   const colors: { [key: string]: string } = {
-    'red-orange': '#ff5a36', // brighter red-orange
-    'emerald': '#34ffb2',    // brighter emerald
-    'blue': '#4fc3ff',       // brighter blue
-    'rose': '#ff5e8e',       // brighter rose
-    'yellow': '#fff75a',     // brighter yellow
-    'orange': '#ffb347',     // brighter orange
-    'red': '#fff84a',        // bright yellow-gold (as per your custom)
-    'pink': '#ff69b4',       // hot pink
+    'red-orange': '#ff5a36',
+    'emerald': '#34ffb2',
+    'blue': '#4fc3ff',
+    'rose': '#ff5e8e',
+    'yellow': '#fff75a',
+    'orange': '#ffb347',
+    'red': '#fff84a',
+    'pink': '#ff69b4',
+    'custom-adc75f': '#adc75f',
+    'custom-cfa93a': '#cfa93a',
+    'custom-6ba5b5': '#6ba5b5',
+    'custom-f5da53': '#f5da53',
+    'custom-bda348': '#bda348',
   };
   return colors[theme] || '#ff5a36';
 };

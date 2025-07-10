@@ -77,7 +77,7 @@ const AppContent = () => {
   const [isDonationOpen, setIsDonationOpen] = useState(false); // Donation support modal
   
   // Media and content states
-  const [selectedVideo, setSelectedVideo] = useState('MYPVQccHhAQ'); // Current background video ID
+  const [selectedVideo, setSelectedVideo] = useState('zhDwjnYZiCo'); // Current background video ID
   const [volume, setVolume] = useState(30); // Audio volume (0-100), start with sound
   const [muted, setMuted] = useState(false);
   const [lastVolume, setLastVolume] = useState(30);
