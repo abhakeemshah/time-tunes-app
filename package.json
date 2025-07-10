@@ -64,7 +64,7 @@
     "vaul": "^0.9.3",
     "zod": "^3.23.8",
     "react-smooth-scrollbar": "^8.7.4",
-    "react-scrollbars-custom": "^5.3.6"
+    "react-scrollbars-custom": "^4.0.31"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
