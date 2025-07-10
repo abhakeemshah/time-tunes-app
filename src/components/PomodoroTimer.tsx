@@ -236,7 +236,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
   const expandWithAnimation = () => {
     setIsMinimized(false);
     setIsAnimatingIn(true);
-    setTimeout(() => setIsAnimatingIn(false), 500); // Match animation duration
+    setTimeout(() => setIsAnimatingIn(false), 800); // Slower animate-in (was 500)
   };
 
   // Hide quotes during transition between minimized/full
@@ -303,7 +303,7 @@ const PomodoroTimer = ({ volume, onVolumeChange }: PomodoroTimerProps) => {
       <MotivationalQuotes isVisible={false} />
       <div className="flex flex-col items-center justify-center h-screen p-0">
         <div 
-          className={`backdrop-blur-xl border border-white/30 rounded-3xl p-6 shadow-2xl w-80 transition-all duration-500 ease-in-out ${
+          className={`backdrop-blur-xl border border-white/30 rounded-3xl p-6 shadow-2xl w-80 transition-all duration-800 ease-in-out ${
             isAnimatingIn ? 'animate-fade-in' : isBoxOpen ? 'scale-100 opacity-100' : 'scale-95 opacity-90'
           }`}
           style={{
